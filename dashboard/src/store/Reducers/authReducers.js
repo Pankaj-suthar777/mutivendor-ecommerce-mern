@@ -27,7 +27,7 @@ export const authReducer = createSlice({
     token: localStorage.getItem("accessToken"),
   },
   reducers: {
-    messageClear: (state, _) => {
+    messageClear: (state) => {
       state.errorMessage = "";
     },
   },

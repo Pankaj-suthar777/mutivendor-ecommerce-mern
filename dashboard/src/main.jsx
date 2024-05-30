@@ -5,7 +5,7 @@ import { Suspense, lazy } from "react";
 import store from "./store";
 import { Provider } from "react-redux";
 import { Toaster } from "react-hot-toast";
-// import App from "./App";
+//import App from "./App";
 const App = lazy(() => import("./App"));
 
 ReactDOM.createRoot(document.getElementById("root")).render(

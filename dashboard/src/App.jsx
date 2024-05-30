@@ -9,7 +9,7 @@ const App = () => {
   useEffect(() => {
     const routes = getRoutes();
     setAllRoutes([...allRoutes, routes]);
-  }, []);
+  }, [allRoutes]);
 
   return <Router allRoutes={allRoutes} />;
 };

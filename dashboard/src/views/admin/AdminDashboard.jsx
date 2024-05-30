@@ -2,6 +2,7 @@ import { FaUsers } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { MdCurrencyExchange, MdProductionQuantityLimits } from "react-icons/md";
 import Chart from "react-apexcharts";
+import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
   const state = {
@@ -54,38 +55,41 @@ const AdminDashboard = () => {
           "Nov",
           "Dec",
         ],
-        legend: {
-          position: "top",
-        },
-        responsive: [
-          {
-            breakpoint: 565,
-            yaxis: {
-              categories: [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apl",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-              ],
-            },
-            options: {
-              plotOptions: {
-                bar: {
-                  //  horizontal :
-                },
+      },
+      legend: {
+        position: "top",
+      },
+      responsive: [
+        {
+          breakpoint: 565,
+          yaxis: {
+            categories: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apl",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+          },
+          options: {
+            plotOptions: {
+              bar: {
+                horizontal: true,
+              },
+              chart: {
+                height: "550px",
               },
             },
           },
-        ],
-      },
+        },
+      ],
     },
   };
   return (
@@ -141,6 +145,154 @@ const AdminDashboard = () => {
               height={350}
             />
           </div>
+        </div>
+        <div className="w-full lg:w-5/12 lg:pl-4 mt-6 lg:mt-0">
+          <div className="bg-[#6a5fdf] w-full p-4 rounded-md text-[#d0d2d6]">
+            <div className="flex justify-between items-center">
+              <h2 className="text-[#d0d2d6] font-semibold text-lg pb-3">
+                Recent Seller Message
+              </h2>
+              <Link to={""} className="font-semibold text-sm text-[#d0d2d6]">
+                View All
+              </Link>
+            </div>
+            <div className="flex flex-col gap-2 pt-6 text-[#d0d2d6]">
+              <ol className="relative border-1 border-slate-600 ml-4">
+                <li className="mb-3 ml-6">
+                  <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] rounded-full z-10">
+                    <img
+                      src="/images/admin.jpg"
+                      className="rounded-full w-full h-full"
+                      alt="admin"
+                    />
+                  </div>
+                  <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
+                    <div className="flex justify-between items-center mb-2 ">
+                      <Link className="text-md font-normal">Admin</Link>
+                      <time className="mb-1 text-sm font-normal sm:mb-0 sm:order-last">
+                        2 day ago
+                      </time>
+                    </div>
+                    <div className="p-2 text-xs font-normal rounded-lg border border-slate-400">
+                      How are you
+                    </div>
+                  </div>
+                </li>
+                <li className="mb-3 ml-6">
+                  <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] rounded-full z-10">
+                    <img
+                      src="/images/admin.jpg"
+                      className="rounded-full w-full h-full"
+                      alt="admin"
+                    />
+                  </div>
+                  <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
+                    <div className="flex justify-between items-center mb-2 ">
+                      <Link className="text-md font-normal">Admin</Link>
+                      <time className="mb-1 text-sm font-normal sm:mb-0 sm:order-last">
+                        2 day ago
+                      </time>
+                    </div>
+                    <div className="p-2 text-xs font-normal rounded-lg border border-slate-400">
+                      How are you
+                    </div>
+                  </div>
+                </li>
+                <li className="mb-3 ml-6">
+                  <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] rounded-full z-10">
+                    <img
+                      src="/images/admin.jpg"
+                      className="rounded-full w-full h-full"
+                      alt="admin"
+                    />
+                  </div>
+                  <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
+                    <div className="flex justify-between items-center mb-2 ">
+                      <Link className="text-md font-normal">Admin</Link>
+                      <time className="mb-1 text-sm font-normal sm:mb-0 sm:order-last">
+                        2 day ago
+                      </time>
+                    </div>
+                    <div className="p-2 text-xs font-normal rounded-lg border border-slate-400">
+                      How are you
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full p-4 bg-[#6a5fdf] rounded-md mt-6">
+        <div className="flex justify-between items-center">
+          <h2 className="font-semibold text-lg text-[#d0d2d6] pb-3">
+            Recent Orders
+          </h2>
+          <Link to={""} className="font-semibold text-sm text-[#d0d2d6]">
+            View All
+          </Link>
+        </div>
+
+        <div className="relative overflow-x-auto">
+          <table className="w-full text-sm text-left text-[#d0d2d6]">
+            <thead className="text-sm border-b border-slate-700  text-[#d0d2d6]">
+              <tr>
+                <th scope="col" className="py-3 px-4">
+                  Order Id
+                </th>
+                <th scope="col" className="py-3 px-4">
+                  Price
+                </th>
+                <th scope="col" className="py-3 px-4">
+                  Payment Status
+                </th>
+                <th scope="col" className="py-3 px-4">
+                  Order Status
+                </th>
+                <th scope="col" className="py-3 px-4">
+                  Active
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[1, 2, 3, 4, 5].map((d, i) => (
+                <tr key={i}>
+                  <td
+                    scope="row"
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                  >
+                    #34444
+                  </td>
+
+                  <td
+                    scope="row"
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                  >
+                    $676
+                  </td>
+                  <td
+                    scope="row"
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                  >
+                    Pending
+                  </td>
+                  <td
+                    scope="row"
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                  >
+                    Pending
+                  </td>
+                  <td
+                    scope="row"
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                  >
+                    <Link to={""}>View</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

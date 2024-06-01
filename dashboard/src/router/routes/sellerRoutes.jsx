@@ -1,7 +1,6 @@
 // import { lazy } from "react";
 // const Home = lazy(() => import("../../views/Home"));
 
-import Home from "../../views/Home";
 import AddProduct from "../../views/seller/AddProduct";
 import Products from "../../views/seller/Products";
 import SellerDashboard from "../../views/seller/SellerDashboard";
@@ -13,12 +12,6 @@ import SellerToCustomer from "../../views/seller/SellerToCustomer";
 import Profile from "../../views/seller/Profile";
 
 export const sellerRoutes = [
-  {
-    path: "/",
-    element: <Home />,
-    role: "seller",
-    status: "active",
-  },
   {
     path: "/seller/dashboard",
     element: <SellerDashboard />,
@@ -58,6 +51,7 @@ export const sellerRoutes = [
   {
     path: "/seller/dashboard/chat-support",
     element: <SellerToAdmin />,
+    role: "seller",
     ability: ["active", "deactive", "pending"],
   },
   {

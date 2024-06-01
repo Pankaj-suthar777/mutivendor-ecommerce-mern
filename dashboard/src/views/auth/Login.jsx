@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { PropagateLoader } from "react-spinners";
 import { overrideStyle } from "../../utils/utils";
 const Login = () => {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { loader, errorMessage, successMessage } = useSelector(
     (state) => state.auth
@@ -30,12 +32,13 @@ const Login = () => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
+      navigate("/");
     }
     if (errorMessage) {
       toast.error(errorMessage);
       dispatch(messageClear());
     }
-  }, [successMessage, errorMessage, dispatch]);
+  }, [successMessage, errorMessage, dispatch, navigate]);
 
   return (
     <div className="min-w-screen min-h-screen bg-[rgb(205,202,233)] flex justify-center items-center">

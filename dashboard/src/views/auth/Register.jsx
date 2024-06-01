@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,8 @@ import {
 import toast from "react-hot-toast";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const { loader, successMessage, errorMessage } = useSelector(
@@ -36,12 +38,13 @@ const Register = () => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
+      navigate("/");
     }
     if (errorMessage) {
       toast.error(errorMessage);
       dispatch(messageClear());
     }
-  }, [successMessage, errorMessage, dispatch]);
+  }, [successMessage, errorMessage, dispatch, navigate]);
 
   return (
     <div className="min-w-screen min-h-screen bg-[rgb(205,202,233)] flex justify-center items-center">

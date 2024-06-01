@@ -5,7 +5,6 @@ const { createToken } = require("../utils/tokenCreate");
 const sellerModel = require("../models/sellerModel");
 const bcrpty = require("bcrypt");
 const sellerCustomerModel = require("../models/chat/sellerCustomerModel");
-
 class authControllers {
   admin_login = async (req, res) => {
     const { email, password } = req.body;
@@ -70,7 +69,7 @@ class authControllers {
     try {
       const getUser = await sellerModel.findOne({ email });
       if (getUser) {
-        responseReturn(res, 404, { error: "Email Already Exit" });
+        responseReturn(res, 404, { error: "Email Already Exist" });
       } else {
         const seller = await sellerModel.create({
           name,
@@ -102,7 +101,8 @@ class authControllers {
         const user = await adminModel.findById(id);
         responseReturn(res, 200, { userInfo: user });
       } else {
-        console.log("selle info");
+        const user = await sellerModel.findById(id);
+        responseReturn(res, 200, { userInfo: user });
       }
     } catch (error) {
       console.log(error.message);

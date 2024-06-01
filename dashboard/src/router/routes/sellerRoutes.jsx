@@ -10,8 +10,20 @@ import Payments from "../../views/seller/Payments";
 import SellerToAdmin from "../../views/seller/SellerToAdmin";
 import SellerToCustomer from "../../views/seller/SellerToCustomer";
 import Profile from "../../views/seller/Profile";
+import Pending from "../../views/Pending";
+import Deactive from "../../views/Deactive";
 
 export const sellerRoutes = [
+  {
+    path: "/seller/account-pending",
+    element: <Pending />,
+    ability: "seller",
+  },
+  {
+    path: "/seller/account-deactive",
+    element: <Deactive />,
+    ability: "seller",
+  },
   {
     path: "/seller/dashboard",
     element: <SellerDashboard />,
@@ -40,7 +52,7 @@ export const sellerRoutes = [
     path: "/seller/dashboard/orders",
     element: <Orders />,
     role: "seller",
-    ability: ["active", "deactive"],
+    visibility: ["active", "deactive"],
   },
   {
     path: "/seller/dashboard/payments",
@@ -52,7 +64,7 @@ export const sellerRoutes = [
     path: "/seller/dashboard/chat-support",
     element: <SellerToAdmin />,
     role: "seller",
-    ability: ["active", "deactive", "pending"],
+    visibility: ["active", "deactive", "pending"],
   },
   {
     path: "/seller/dashboard/chat-customer/:customerId",

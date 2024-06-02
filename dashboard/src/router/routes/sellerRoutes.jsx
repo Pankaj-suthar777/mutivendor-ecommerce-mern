@@ -12,6 +12,8 @@ import SellerToCustomer from "../../views/seller/SellerToCustomer";
 import Profile from "../../views/seller/Profile";
 import Pending from "../../views/Pending";
 import Deactive from "../../views/Deactive";
+import EditProduct from "../../views/seller/EditProduct";
+import OrderDetails from "../../views/seller/OrderDetails";
 
 export const sellerRoutes = [
   {
@@ -83,5 +85,17 @@ export const sellerRoutes = [
     element: <Profile />,
     role: "seller",
     status: "active",
+  },
+  {
+    path: "/seller/dashboard/edit-product/:productId",
+    element: <EditProduct />,
+    role: "seller",
+    status: "active",
+  },
+  {
+    path: "/seller/dashboard/order/details/:orderId",
+    element: <OrderDetails />,
+    role: "seller",
+    ability: ["active", "deactive"],
   },
 ];

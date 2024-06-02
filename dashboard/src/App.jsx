@@ -12,14 +12,15 @@ const App = () => {
 
   useEffect(() => {
     const routes = getRoutes();
-    setAllRoutes([...allRoutes, routes]);
-  }, [allRoutes]);
+    console.log(routes);
+    setAllRoutes((prevRoutes) => [...prevRoutes, { ...routes }]);
+  }, []);
 
   useEffect(() => {
     if (token) {
       dispatch(get_user_info(token));
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   return <Router allRoutes={allRoutes} />;
 };

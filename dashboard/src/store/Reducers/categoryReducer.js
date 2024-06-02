@@ -11,14 +11,34 @@ export const categoryAdd = createAsyncThunk(
       const { data } = await api.post("/category-add", formData, {
         withCredentials: true,
       });
-      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
-      // console.log(error.response.data)
       return rejectWithValue(error.response.data);
     }
   }
 );
+
+// End Method
+
+export const get_category = createAsyncThunk(
+  "category/get_category",
+  async (
+    { parPage, page, searchValue },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const { data } = await api.get(
+        `/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
+        { withCredentials: true }
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// End Method
 
 export const categoryReducer = createSlice({
   name: "category",
@@ -27,9 +47,10 @@ export const categoryReducer = createSlice({
     errorMessage: "",
     loader: false,
     categorys: [],
+    totalCategory: 0,
   },
   reducers: {
-    messageClear: (state, _) => {
+    messageClear: (state) => {
       state.errorMessage = "";
       state.successMessage = "";
     },
@@ -42,13 +63,16 @@ export const categoryReducer = createSlice({
       .addCase(categoryAdd.rejected, (state, { payload }) => {
         state.loader = false;
         state.errorMessage = payload.error;
+      })
+      .addCase(categoryAdd.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.categorys = [...state.categorys, payload.category];
+      })
+      .addCase(get_category.fulfilled, (state, { payload }) => {
+        state.totalCategory = payload.totalCategory;
+        state.categorys = payload.categorys;
       });
-    // .addCase(admin_login.fulfilled, (state, { payload }) => {
-    //     state.loader = false;
-    //     state.successMessage = payload.message
-    //     state.token = payload.token
-    //     state.role = returnRole(payload.token)
-    // })
   },
 });
 export const { messageClear } = categoryReducer.actions;

@@ -45,3 +45,42 @@ const ProtectRoute = ({ route, children }) => {
 };
 
 export default ProtectRoute;
+// import { Suspense } from "react";
+// import { useSelector } from "react-redux";
+// import { Navigate } from "react-router-dom";
+
+// const ProtectRoute = ({ route, children }) => {
+//   const { role, userInfo } = useSelector((state) => state.auth);
+
+//   if (!role) {
+//     return <Navigate to="/login" replace />;
+//   }
+
+//   if (!userInfo) {
+//     return <Navigate to="/unauthorized" replace />;
+//   }
+
+//   if (route.role && userInfo.role !== route.role) {
+//     return <Navigate to="/unauthorized" replace />;
+//   }
+
+//   if (route.status && route.status !== userInfo.status) {
+//     if (userInfo.status === "pending") {
+//       return <Navigate to="/seller/account-pending" replace />;
+//     } else {
+//       return <Navigate to="/seller/account-deactive" replace />;
+//     }
+//   }
+
+//   if (route.visibility && !route.visibility.includes(userInfo.status)) {
+//     return <Navigate to="/seller/account-pending" replace />;
+//   }
+
+//   if (route.ability === "seller") {
+//     return <Suspense fallback={null}>{children}</Suspense>;
+//   }
+
+//   return <Suspense fallback={null}>{children}</Suspense>;
+// };
+
+// export default ProtectRoute;

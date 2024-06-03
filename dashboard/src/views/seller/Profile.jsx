@@ -4,16 +4,18 @@ import { FadeLoader } from "react-spinners";
 import { FaRegEdit } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // profile_image_upload,
+  profile_image_upload,
   messageClear,
   // profile_info_add,
 } from "../../store/Reducers/authReducers";
 import toast from "react-hot-toast";
 import { PropagateLoader } from "react-spinners";
 import { overrideStyle } from "../../utils/utils";
-//import { create_stripe_connect_account } from "../../store/Reducers/sellerReducer";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [state, setState] = useState({
     division: "",
     district: "",
@@ -21,23 +23,18 @@ const Profile = () => {
     sub_district: "",
   });
 
-  const dispatch = useDispatch();
-  const { userInfo, loader, successMessage } = useSelector(
-    (state) => state.auth
-  );
-
-  useEffect(() => {
-    if (successMessage) {
-      toast.success(successMessage);
-      messageClear();
-    }
-  }, [successMessage]);
+  // useEffect(() => {
+  //   if (successMessage) {
+  //     toast.success(successMessage);
+  //     messageClear();
+  //   }
+  // }, [successMessage]);
 
   const add_image = (e) => {
     if (e.target.files.length > 0) {
       const formData = new FormData();
       formData.append("image", e.target.files[0]);
-      //    dispatch(profile_image_upload(formData));
+      dispatch(profile_image_upload(formData));
     }
   };
 

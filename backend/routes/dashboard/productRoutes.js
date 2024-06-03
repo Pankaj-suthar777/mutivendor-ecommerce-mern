@@ -11,4 +11,10 @@ router.get(
 );
 router.post("/product-update", authMidleware, productController.product_update);
 
+router.post(
+  "/product-image-update",
+  authMidleware,
+  productController.product_image_update
+);
+
 module.exports = router;

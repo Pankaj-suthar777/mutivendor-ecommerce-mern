@@ -5,6 +5,9 @@ const { createToken } = require("../utils/tokenCreate");
 const sellerModel = require("../models/sellerModel");
 const bcrpty = require("bcrypt");
 const sellerCustomerModel = require("../models/chat/sellerCustomerModel");
+const cloudinary = require("cloudinary").v2;
+const formidable = require("formidable");
+
 class authControllers {
   admin_login = async (req, res) => {
     const { email, password } = req.body;
@@ -109,7 +112,26 @@ class authControllers {
     }
   };
 
-  // End getUser method
+  // End Method
+
+  profile_image_upload = async (req, res) => {
+    const { id } = req;
+    const form = formidable({ multiples: true });
+    form.parse(req, async (err, _, files) => {
+      cloudinary.config({
+        cloud_name: process.env.cloud_name,
+        api_key: process.env.api_key,
+        api_secret: process.env.api_secret,
+        secure: true,
+      });
+      const { image } = files;
+
+      try {
+      } catch (error) {}
+    });
+  };
+
+  // End Method
 }
 
 module.exports = new authControllers();

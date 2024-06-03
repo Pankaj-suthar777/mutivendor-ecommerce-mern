@@ -31,7 +31,7 @@ const Products = () => {
 
       <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
         <Search
-          setParPage={setParPage}
+          setPerPage={setParPage}
           setSearchValue={setSearchValue}
           searchValue={searchValue}
         />

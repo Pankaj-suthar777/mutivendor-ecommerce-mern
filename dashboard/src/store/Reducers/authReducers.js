@@ -81,6 +81,24 @@ const returnRole = (token) => {
   }
 };
 
+// end method
+
+export const profile_image_upload = createAsyncThunk(
+  "auth/profile_image_upload",
+  async (image, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/profile-image-upload", image, {
+        withCredentials: true,
+      });
+
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// end method
+
 export const authReducer = createSlice({
   name: "auth",
   initialState: {

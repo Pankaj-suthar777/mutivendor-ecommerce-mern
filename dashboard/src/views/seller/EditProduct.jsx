@@ -8,6 +8,7 @@ import {
 import {
   get_product,
   update_product,
+  product_image_update,
 } from "../../store/Reducers/productReducers";
 import { PropagateLoader } from "react-spinners";
 import { overrideStyle } from "../../utils/utils";
@@ -74,8 +75,13 @@ const EditProduct = () => {
 
   const changeImage = (img, files) => {
     if (files.length > 0) {
-      console.log(img);
-      console.log(files[0]);
+      dispatch(
+        product_image_update({
+          oldImage: img,
+          newImage: files[0],
+          productId,
+        })
+      );
     }
   };
 

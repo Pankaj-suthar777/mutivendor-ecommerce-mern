@@ -4,5 +4,11 @@ const router = require("express").Router();
 
 router.post("/product-add", authMidleware, productController.add_product);
 router.get("/products-get", authMidleware, productController.products_get);
+router.get(
+  "/product-get/:productId",
+  authMidleware,
+  productController.product_get
+);
+router.post("/product-update", authMidleware, productController.product_update);
 
 module.exports = router;

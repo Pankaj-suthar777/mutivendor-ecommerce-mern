@@ -94,7 +94,61 @@ class productController {
           .countDocuments();
         responseReturn(res, 200, { products, totalProduct });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.message);
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
+
+  // End Method
+
+  product_get = async (req, res) => {
+    const { productId } = req.params;
+    try {
+      const product = await productModel.findById(productId);
+      responseReturn(res, 200, { product });
+    } catch (error) {
+      console.log(error.message);
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
+
+  // End Method
+
+  product_update = async (req, res) => {
+    let {
+      name,
+      description,
+      stock,
+      price,
+      discount,
+      brand,
+      productId,
+      category,
+    } = req.body;
+    name = name.trim();
+    const slug = name.split(" ").join("-");
+
+    try {
+      await productModel.findByIdAndUpdate(productId, {
+        name,
+        description,
+        stock,
+        price,
+        discount,
+        brand,
+        productId,
+        slug,
+        category,
+      });
+      const product = await productModel.findById(productId);
+      responseReturn(res, 200, {
+        product,
+        message: "Product Updated Successfully",
+      });
+    } catch (error) {
+      responseReturn(res, 500, { error: error.message });
+    }
   };
 
   // End Method

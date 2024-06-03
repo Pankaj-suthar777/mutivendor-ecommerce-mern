@@ -1,6 +1,6 @@
 import authReducer from "./Reducers/authReducers";
 import categoryReducer from "./Reducers/categoryReducer";
-import { productReducer } from "./Reducers/productReducers";
+import productReducer from "./Reducers/productReducers";
 
 const rootReducer = {
   auth: authReducer,

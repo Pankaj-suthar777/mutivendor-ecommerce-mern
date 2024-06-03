@@ -18,18 +18,35 @@ export const add_product = createAsyncThunk(
 
 // End Method
 
-export const get_product = createAsyncThunk(
-  "category/get_product",
+export const get_products = createAsyncThunk(
+  "product/get_product",
   async (
     { parPage, page, searchValue },
     { rejectWithValue, fulfillWithValue }
   ) => {
     try {
       const { data } = await api.get(
-        `/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
+        `/products-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
         { withCredentials: true }
       );
-      // console.log(data)
+
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// End Method
+
+export const get_product = createAsyncThunk(
+  "product/get_product",
+  async (productId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(`/product-get/${productId}`, {
+        withCredentials: true,
+      });
+      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       // console.log(error.response.data)
@@ -52,6 +69,7 @@ export const productReducer = createSlice({
   reducers: {
     messageClear: (state) => {
       state.errorMessage = "";
+      state.successMessage = "";
     },
   },
   extraReducers: (builder) => {
@@ -66,10 +84,9 @@ export const productReducer = createSlice({
       .addCase(add_product.fulfilled, (state, { payload }) => {
         state.loader = false;
         state.successMessage = payload.message;
-        state.products = [...state.products, payload.category];
       })
 
-      .addCase(get_product.fulfilled, (state, { payload }) => {
+      .addCase(get_products.fulfilled, (state, { payload }) => {
         state.totalProduct = payload.totalProduct;
         state.products = payload.products;
       });

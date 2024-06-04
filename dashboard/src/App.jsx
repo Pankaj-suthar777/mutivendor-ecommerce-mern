@@ -12,7 +12,6 @@ const App = () => {
 
   useEffect(() => {
     const routes = getRoutes();
-    console.log(routes);
     setAllRoutes((prevRoutes) => [...prevRoutes, { ...routes }]);
   }, []);
 

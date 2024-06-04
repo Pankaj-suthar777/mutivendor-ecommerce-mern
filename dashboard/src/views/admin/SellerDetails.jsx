@@ -1,4 +1,47 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import {
+  get_seller,
+  messageClear,
+  seller_status_update,
+} from "../../store/Reducers/sellerReducer";
+import toast from "react-hot-toast";
+
 const SellerDetails = () => {
+  const dispatch = useDispatch();
+  const { seller, successMessage } = useSelector((state) => state.seller);
+
+  const { sellerId } = useParams();
+
+  useEffect(() => {
+    dispatch(get_seller(sellerId));
+  }, [sellerId, dispatch]);
+
+  const [status, setStatus] = useState("");
+  const submit = (e) => {
+    e.preventDefault();
+    dispatch(
+      seller_status_update({
+        sellerId,
+        status,
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+  }, [successMessage, dispatch]);
+
+  useEffect(() => {
+    if (seller) {
+      setStatus(seller.status);
+    }
+  }, [seller]);
+
   return (
     <div className="px-2 lg:px-7 pt-5">
       <h1 className="text-[20px] font-bold mb-3"> Seller Details </h1>
@@ -6,7 +49,11 @@ const SellerDetails = () => {
         <div className="w-full flex flex-wrap text-[#d0d2d6]">
           <div className="w-3/12 flex justify-center items-center py-3">
             <div>
-              <img className="w-full h-[230px]" src="/images/demo.jpg" alt="" />
+              {seller?.image ? (
+                <img className="w-full h-[230px]" src={seller.image} alt="" />
+              ) : (
+                <span>Image Not Uploaded </span>
+              )}
             </div>
           </div>
 
@@ -19,24 +66,24 @@ const SellerDetails = () => {
               <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-[#9e97e9] rounded-md">
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>Name : </span>
-                  <span>Raju yadav </span>
+                  <span>{seller?.name}</span>
                 </div>
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>Email : </span>
-                  <span>raju@gmail.com </span>
+                  <span>{seller?.email}</span>
                 </div>
 
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>Role : </span>
-                  <span>Seller </span>
+                  <span>{seller?.role} </span>
                 </div>
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>Status : </span>
-                  <span>Active </span>
+                  <span>{seller?.status} </span>
                 </div>
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>Payment Status : </span>
-                  <span>Active </span>
+                  <span>{seller?.payment} </span>
                 </div>
               </div>
             </div>
@@ -51,32 +98,35 @@ const SellerDetails = () => {
               <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-[#9e97e9] rounded-md">
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>Shop Name : </span>
-                  <span>Raju yadav </span>
+                  <span>{seller?.shopInfo?.shopName} </span>
                 </div>
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>Divission : </span>
-                  <span>raju@gmail.com </span>
+                  <span>{seller?.shopInfo?.division} </span>
                 </div>
 
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>District : </span>
-                  <span>Seller </span>
+                  <span>{seller?.shopInfo?.district} </span>
                 </div>
                 <div className="flex gap-2 font-bold text-[#000000]">
                   <span>State : </span>
-                  <span>Active </span>
+                  <span>{seller?.shopInfo?.sub_district} </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <form>
+          <form onSubmit={submit}>
             <div className="flex gap-4 py-3">
               <select
                 className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
                 name=""
                 id=""
+                required
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
               >
                 <option value="">--Select Status--</option>
                 <option value="active">Active</option>

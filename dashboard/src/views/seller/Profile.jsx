@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   profile_image_upload,
   messageClear,
-  // profile_info_add,
+  profile_info_add,
 } from "../../store/Reducers/authReducers";
 import toast from "react-hot-toast";
 import { PropagateLoader } from "react-spinners";
@@ -14,7 +14,9 @@ import { overrideStyle } from "../../utils/utils";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo, successMessage, loader } = useSelector(
+    (state) => state.auth
+  );
 
   const [state, setState] = useState({
     division: "",
@@ -23,12 +25,12 @@ const Profile = () => {
     sub_district: "",
   });
 
-  // useEffect(() => {
-  //   if (successMessage) {
-  //     toast.success(successMessage);
-  //     messageClear();
-  //   }
-  // }, [successMessage]);
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      messageClear();
+    }
+  }, [successMessage]);
 
   const add_image = (e) => {
     if (e.target.files.length > 0) {
@@ -45,10 +47,10 @@ const Profile = () => {
     });
   };
 
-  // const add = (e) => {
-  //   e.preventDefault();
-  //   dispatch(profile_info_add(state));
-  // };
+  const add = (e) => {
+    e.preventDefault();
+    dispatch(profile_info_add(state));
+  };
 
   return (
     <div className="px-2 lg:px-7 py-5">
@@ -76,7 +78,7 @@ const Profile = () => {
                   htmlFor="img"
                 >
                   <span>
-                    <FaImages />{" "}
+                    <FaImages />
                   </span>
                   <span>Select Image</span>
                   {loader && (
@@ -99,7 +101,7 @@ const Profile = () => {
             <div className="px-0 md:px-5 py-2">
               <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-800 rounded-md relative">
                 <span className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50 absolute right-2 top-2 cursor-pointer">
-                  <FaRegEdit />{" "}
+                  <FaRegEdit />
                 </span>
                 <div className="flex gap-2">
                   <span>Name : </span>
@@ -141,9 +143,7 @@ const Profile = () => {
 
             <div className="px-0 md:px-5 py-2">
               {!userInfo?.shopInfo ? (
-                <form
-                //onSubmit={add}
-                >
+                <form onSubmit={add}>
                   <div className="flex flex-col w-full gap-1 mb-2">
                     <label htmlFor="Shop">Shop Name</label>
                     <input

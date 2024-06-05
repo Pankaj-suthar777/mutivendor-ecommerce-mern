@@ -1,6 +1,6 @@
 import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
-import Rating from "./Rating";
+import Rating from "../Rating";
 
 const FeatureProducts = () => {
   return (

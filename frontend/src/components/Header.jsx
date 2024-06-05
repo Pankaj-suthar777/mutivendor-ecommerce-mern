@@ -137,6 +137,7 @@ const Header = () => {
                 <ul className="flex justify-start items-start gap-8 text-sm font-bold uppercase md-lg:hidden">
                   <li>
                     <Link
+                      to={"/"}
                       className={`p-2 block ${
                         pathname === "/" ? "text-[#059473]" : "text-slate-600"
                       } `}
@@ -147,8 +148,9 @@ const Header = () => {
 
                   <li>
                     <Link
+                      to="/shops"
                       className={`p-2 block ${
-                        pathname === "/shop"
+                        pathname === "/shops"
                           ? "text-[#059473]"
                           : "text-slate-600"
                       } `}
@@ -279,6 +281,7 @@ const Header = () => {
 
               <li>
                 <Link
+                  to="/shops"
                   className={`py-2 block ${
                     pathname === "/shop" ? "text-[#059473]" : "text-slate-600"
                   } `}

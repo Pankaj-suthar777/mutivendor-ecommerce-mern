@@ -6,8 +6,17 @@ import Shipping from "./pages/Shipping";
 import Details from "./pages/Details";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { useDispatch } from "react-redux";
+import { get_category } from "./store/reducers/homeReducer";
+import { useEffect } from "react";
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(get_category());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <Routes>

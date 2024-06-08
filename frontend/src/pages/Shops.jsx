@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Range } from "react-range";
 import { AiFillStar } from "react-icons/ai";
 import { CiStar } from "react-icons/ci";
@@ -11,28 +11,81 @@ import { BsFillGridFill } from "react-icons/bs";
 import { FaThList } from "react-icons/fa";
 import ShopProducts from "../components/products/ShopProducts";
 import Pagination from "../components/Pagination";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  price_range_product,
+  query_products,
+} from "../store/reducers/homeReducer";
 
 const Shops = () => {
+  const dispatch = useDispatch();
+  const {
+    products,
+    categorys,
+    priceRange,
+    latest_product,
+    totalProduct,
+    parPage,
+  } = useSelector((state) => state.home);
+
+  useEffect(() => {
+    dispatch(price_range_product());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setState({
+      values: [priceRange.low, priceRange.high],
+    });
+  }, [priceRange]);
+
   const [filter, setFilter] = useState(true);
   const [rating, setRating] = useState("");
 
   const [styles, setStyles] = useState("grid");
 
-  const [parPage, setParPage] = useState(1);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const categorys = [
-    "Mobiles",
-    "Laptops",
-    "Speakers",
-    "Top wear",
-    "Footwear",
-    "Watches",
-    "Home Decor",
-    "Smart Watches",
-  ];
+  const [state, setState] = useState({
+    values: [priceRange.low, priceRange.high],
+  });
 
-  const [state, setState] = useState({ values: [50, 1500] });
+  const [category, setCategory] = useState("");
+  const [sortPrice, setSortPrice] = useState("");
+
+  const queryCategory = (e, value) => {
+    if (e.target.checked) {
+      setCategory(value);
+    } else {
+      setCategory("");
+    }
+  };
+
+  useEffect(() => {
+    dispatch(
+      query_products({
+        low: state.values[0],
+        high: state.values[1],
+        category,
+        rating,
+        sortPrice,
+        pageNumber,
+      })
+    );
+  }, [dispatch, state.values, category, rating, sortPrice, pageNumber]);
+
+  const resetRating = () => {
+    setRating("");
+    dispatch(
+      query_products({
+        low: state.values[0],
+        high: state.values[1],
+        category,
+        rating: "",
+        sortPrice,
+        pageNumber,
+      })
+    );
+  };
 
   return (
     <div>
@@ -81,12 +134,17 @@ const Shops = () => {
                     key={i}
                     className="flex justify-start items-center gap-2 py-1"
                   >
-                    <input type="checkbox" id={c} />
+                    <input
+                      checked={category === c.name ? true : false}
+                      onChange={(e) => queryCategory(e, c.name)}
+                      type="checkbox"
+                      id={c.name}
+                    />
                     <label
                       className="text-slate-600 block cursor-pointer"
-                      htmlFor={c}
+                      htmlFor={c.name}
                     >
-                      {c}
+                      {c.name}
                     </label>
                   </div>
                 ))}
@@ -98,8 +156,8 @@ const Shops = () => {
 
                 <Range
                   step={5}
-                  min={50}
-                  max={1500}
+                  min={priceRange?.low}
+                  max={priceRange?.high}
                   values={state.values}
                   onChange={(values) => setState({ values })}
                   renderTrack={({ props, children }) => (
@@ -114,6 +172,7 @@ const Shops = () => {
                     <div
                       className="w-[15px] h-[15px] bg-[#059473] rounded-full"
                       {...props}
+                      key={Math.random()}
                     />
                   )}
                 />
@@ -234,7 +293,10 @@ const Shops = () => {
                     </span>
                   </div>
 
-                  <div className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer">
+                  <div
+                    onClick={resetRating}
+                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
+                  >
                     <span>
                       <CiStar />
                     </span>
@@ -254,7 +316,7 @@ const Shops = () => {
                 </div>
 
                 <div className="py-5 flex flex-col gap-4 md:hidden">
-                  <Products title="Latest Product" />
+                  <Products title="Latest Product" products={latest_product} />
                 </div>
               </div>
             </div>
@@ -263,10 +325,12 @@ const Shops = () => {
               <div className="pl-8 md:pl-0">
                 <div className="py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border">
                   <h2 className="text-lg font-medium text-slate-600">
-                    14 Products
+                    ({totalProduct}) Products
                   </h2>
                   <div className="flex justify-center items-center gap-3">
                     <select
+                      onChange={(e) => setSortPrice(e.target.value)}
+                      value={sortPrice}
                       className="p-1 border outline-0 text-slate-600 font-semibold"
                       name=""
                       id=""
@@ -297,16 +361,18 @@ const Shops = () => {
                 </div>
               </div>
               <div className="pb-8">
-                <ShopProducts styles={styles} />
+                <ShopProducts styles={styles} products={products} />
               </div>
               <div>
-                <Pagination
-                  pageNumber={pageNumber}
-                  setPageNumber={setPageNumber}
-                  totalItem={10}
-                  parPage={parPage}
-                  showItem={Math.floor(10 / 3)}
-                />
+                {totalProduct > parPage && (
+                  <Pagination
+                    pageNumber={pageNumber}
+                    setPageNumber={setPageNumber}
+                    totalItem={totalProduct}
+                    parPage={parPage}
+                    showItem={Math.floor(totalProduct / parPage)}
+                  />
+                )}
               </div>
             </div>
           </div>

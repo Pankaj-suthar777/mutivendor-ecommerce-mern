@@ -17,6 +17,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const user = true;
@@ -26,19 +27,10 @@ const Header = () => {
 
   const wishlist_count = 8;
 
-  const categorys = [
-    "Mobiles",
-    "Laptops",
-    "Speakers",
-    "Top wear",
-    "Footwear",
-    "Watches",
-    "Home Decor",
-    "Smart Watches",
-  ];
-
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("");
+
+  const { categorys } = useSelector((state) => state.home);
 
   return (
     <div className="w-full bg-white">
@@ -392,7 +384,12 @@ const Header = () => {
                         key={i}
                         className="flex justify-start items-center gap-2 px-[24px] py-[6px]"
                       >
-                        <Link className="text-sm block">{c}</Link>
+                        <img
+                          src={c.image}
+                          className="w-[30px] h-[30px] rounded-full overflow-hidden"
+                          alt=""
+                        />
+                        <Link className="text-sm block">{c.name}</Link>
                       </li>
                     );
                   })}
@@ -415,7 +412,7 @@ const Header = () => {
                       <option value="">Select Category</option>
                       {categorys.map((c, i) => (
                         <option key={i} value={c}>
-                          {c}
+                          {c.name}
                         </option>
                       ))}
                     </select>

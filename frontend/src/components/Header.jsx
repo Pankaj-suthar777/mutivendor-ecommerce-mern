@@ -15,12 +15,20 @@ import {
 import { FaCartShopping, FaTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const user = true;
+  let [searchParams] = useSearchParams();
+  const categoryFromPara = searchParams.get("category");
+
+  const user = false;
   const [showSidebar, setShowSidebar] = useState(true);
   const { pathname } = useLocation();
   const [categoryShow, setCategoryShow] = useState(true);
@@ -28,9 +36,17 @@ const Header = () => {
   const wishlist_count = 8;
 
   const [searchValue, setSearchValue] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(
+    categoryFromPara ? categoryFromPara : ""
+  );
+
+  const navigate = useNavigate();
 
   const { categorys } = useSelector((state) => state.home);
+
+  const search = () => {
+    navigate(`/products/search?category=${category}&&value=${searchValue}`);
+  };
 
   return (
     <div className="w-full bg-white">
@@ -60,13 +76,13 @@ const Header = () => {
                   <a href="#">
                     <FaFacebookF />
                   </a>
-                  <a href="#">
+                  <a href="https://x.com/pankaj_suthar77">
                     <FaTwitter />
                   </a>
                   <a href="#">
                     <FaLinkedin />
                   </a>
-                  <a href="#">
+                  <a href="https://github.com/Pankaj-suthar777">
                     <FaGithub />
                   </a>
                 </div>
@@ -88,7 +104,7 @@ const Header = () => {
                     <span>
                       <FaUser />
                     </span>
-                    <span>Kazi Ariyan </span>
+                    <span>Pankaj Suthar</span>
                   </Link>
                 ) : (
                   <Link
@@ -265,6 +281,7 @@ const Header = () => {
             <ul className="flex flex-col justify-start items-start text-sm font-bold uppercase">
               <li>
                 <Link
+                  to={"/"}
                   className={`py-2 block ${
                     pathname === "/" ? "text-[#059473]" : "text-slate-600"
                   } `}
@@ -412,7 +429,7 @@ const Header = () => {
                     >
                       <option value="">Select Category</option>
                       {categorys.map((c, i) => (
-                        <option key={i} value={c}>
+                        <option key={i} value={c.name}>
                           {c.name}
                         </option>
                       ))}
@@ -427,7 +444,10 @@ const Header = () => {
                     id=""
                     placeholder="What do you need"
                   />
-                  <button className="bg-[#059473] right-0absolute px-8 h-full font-semibold uppercase text-white">
+                  <button
+                    onClick={search}
+                    className="bg-[#059473] right-0absolute px-8 h-full font-semibold uppercase text-white"
+                  >
                     Search
                   </button>
                 </div>

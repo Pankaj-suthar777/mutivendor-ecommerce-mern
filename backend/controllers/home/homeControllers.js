@@ -59,7 +59,7 @@ class homeControllers {
       const allProducts3 = await productModel
         .find({})
         .limit(9)
-        .sort({ rating: -1 });
+        .sort({ discount: -1 });
 
       const discount_product = this.formateProduct(allProducts3);
 
@@ -85,6 +85,7 @@ class homeControllers {
       const products = await productModel.find({}).limit(9).sort({
         createdAt: -1,
       });
+
       const latest_product = this.formateProduct(products);
       const getForPrice = await productModel.find({}).sort({
         price: 1,
@@ -105,11 +106,11 @@ class homeControllers {
   // end method
 
   query_product = async (req, res) => {
-    const parPage = 12;
+    const parPage = 8;
     req.query.parPage = parPage;
 
     try {
-      const products = await productModel.find({}).limit(9).sort({
+      const products = await productModel.find({}).sort({
         createdAt: -1,
       });
 

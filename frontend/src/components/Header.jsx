@@ -375,12 +375,13 @@ const Header = () => {
               <div
                 className={`${
                   categoryShow ? "h-0" : "h-[400px]"
-                } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[99999] bg-[#dbf3ed] w-full border-x`}
+                } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[99999] bg-[#dbf3ed] w-full border-x overflow-y-auto`}
               >
-                <ul className="py-2 text-slate-600 font-medium">
+                <ul className="py-2 text-slate-600 font-medium ">
                   {categorys.map((c, i) => {
                     return (
-                      <li
+                      <Link
+                        to={`/products?category=${c.name}`}
                         key={i}
                         className="flex justify-start items-center gap-2 px-[24px] py-[6px]"
                       >
@@ -389,8 +390,8 @@ const Header = () => {
                           className="w-[30px] h-[30px] rounded-full overflow-hidden"
                           alt=""
                         />
-                        <Link className="text-sm block">{c.name}</Link>
-                      </li>
+                        <span className="text-sm block">{c.name}</span>
+                      </Link>
                     );
                   })}
                 </ul>

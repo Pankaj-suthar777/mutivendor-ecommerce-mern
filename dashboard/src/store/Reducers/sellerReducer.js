@@ -64,6 +64,7 @@ export const sellerReducer = createSlice({
   reducers: {
     messageClear: (state) => {
       state.errorMessage = "";
+      state.successMessage = "";
     },
   },
   extraReducers: (builder) => {

@@ -12,7 +12,7 @@ class productController {
       let {
         name,
         category,
-        descrirsption,
+        description,
         stock,
         price,
         discount,

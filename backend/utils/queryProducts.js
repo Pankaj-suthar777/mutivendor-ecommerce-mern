@@ -37,11 +37,11 @@ class queryProducts {
 
   priceQuery = () => {
     this.products = this.products.filter(
-      (p) =>
-        (p.price >= this.query.lowPrice) & (p.price <= this.query.highPrice)
+      (p) => p.price >= this.query.lowPrice && p.price <= this.query.highPrice
     );
     return this;
   };
+
   sortByPrice = () => {
     if (this.query.sortPrice) {
       if (this.query.sortPrice === "low-to-high") {

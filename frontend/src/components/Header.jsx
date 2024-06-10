@@ -28,7 +28,6 @@ const Header = () => {
   let [searchParams] = useSearchParams();
   const categoryFromPara = searchParams.get("category");
 
-  const user = false;
   const [showSidebar, setShowSidebar] = useState(true);
   const { pathname } = useLocation();
   const [categoryShow, setCategoryShow] = useState(true);
@@ -43,6 +42,16 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { categorys } = useSelector((state) => state.home);
+  const { userInfo } = useSelector((state) => state.auth);
+  const { cart_product_count } = useSelector((state) => state.cart);
+
+  const redirect_card_page = () => {
+    if (userInfo) {
+      navigate("/card");
+    } else {
+      navigate("/login");
+    }
+  };
 
   const search = () => {
     navigate(`/products/search?category=${category}&&value=${searchValue}`);
@@ -96,7 +105,7 @@ const Header = () => {
                     <li>English</li>
                   </ul>
                 </div>
-                {user ? (
+                {userInfo ? (
                   <Link
                     className="flex cursor-pointer justify-center items-center gap-2 text-sm text-black"
                     to="/dashboard"
@@ -104,7 +113,7 @@ const Header = () => {
                     <span>
                       <FaUser />
                     </span>
-                    <span>Pankaj Suthar</span>
+                    <span>{userInfo.name}</span>
                   </Link>
                 ) : (
                   <Link
@@ -212,14 +221,19 @@ const Header = () => {
                     </div>
 
                     <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
-                      <span className="text-xl text-green-500">
+                      <span
+                        className="text-xl text-green-500"
+                        onClick={redirect_card_page}
+                      >
                         <Link to={"/cart"}>
                           <FaCartShopping />
                         </Link>
                       </span>
-                      <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px] ">
-                        {wishlist_count}
-                      </div>
+                      {cart_product_count !== 0 && (
+                        <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px] ">
+                          {cart_product_count}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -255,7 +269,7 @@ const Header = () => {
                   <li>English</li>
                 </ul>
               </div>
-              {user ? (
+              {userInfo ? (
                 <Link
                   className="flex cursor-pointer justify-center items-center gap-2 text-sm text-black"
                   to="/dashboard"
@@ -263,7 +277,7 @@ const Header = () => {
                   <span>
                     <FaUser />
                   </span>
-                  <span>Kazi Ariyan </span>
+                  <span>{userInfo.name} </span>
                 </Link>
               ) : (
                 <Link

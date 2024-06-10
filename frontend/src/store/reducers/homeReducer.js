@@ -33,7 +33,6 @@ export const price_range_product = createAsyncThunk(
   async (_, { fulfillWithValue }) => {
     try {
       const { data } = await api.get("/home/price-range-latest-product");
-      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       console.log(error.respone);

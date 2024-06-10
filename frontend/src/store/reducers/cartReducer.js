@@ -15,7 +15,7 @@ export const add_to_cart = createAsyncThunk(
 // End Method
 
 export const get_cart_products = createAsyncThunk(
-  "card/get_card_products",
+  "cart/get_cart_products",
   async (userId, { rejectWithValue, fulfillWithValue }) => {
     try {
       const { data } = await api.get(

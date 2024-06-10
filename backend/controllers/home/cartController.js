@@ -24,7 +24,7 @@ class cartController {
       });
 
       if (product) {
-        responseReturn(res, 404, { error: "Product Already Added To Card" });
+        responseReturn(res, 404, { error: "Product Already Added To Cart" });
       } else {
         const product = await cartModel.create({
           userId,
@@ -32,7 +32,7 @@ class cartController {
           quantity,
         });
         responseReturn(res, 201, {
-          message: "Added To Card Successfully",
+          message: "Added To Cart Successfully",
           product,
         });
       }
@@ -53,8 +53,46 @@ class cartController {
             },
           },
         },
+        // $lookup stage allows you to perform a left outer join to combine documents from two collections based on a specified local and foreign field.
+        {
+          $lookup: {
+            from: "products",
+            localField: "productId",
+            foreignField: "_id",
+            as: "products",
+          },
+        },
       ]);
-      console.log(cart_products);
+      let buy_product_item = 0;
+      let calculatePrice = 0;
+      let cart_product_count = 0;
+      const outOfStockProduct = cart_products.filter(
+        (p) => p.products[0].stock < p.quantity
+      );
+
+      for (let i = 0; i < outOfStockProduct.length; i++) {
+        cart_product_count = cart_product_count + outOfStockProduct[i].quantity;
+      }
+      const stockProduct = cart_products.filter(
+        (p) => p.products[0].stock >= p.quantity
+      );
+
+      for (let i = 0; i < stockProduct.length; i++) {
+        const { quantity } = stockProduct[i];
+        cart_product_count = buy_product_item + quantity;
+
+        buy_product_item = buy_product_item + quantity;
+        const { price, discount } = stockProduct[i].products[0];
+        if (discount !== 0) {
+          calculatePrice =
+            calculatePrice +
+            quantity * (price - Math.floor((price * discount) / 100));
+        } else {
+          calculatePrice = calculatePrice + quantity * price;
+        }
+      } // end for
+      let p = [];
+      let unique;
     } catch (error) {
       console.log(error.message);
     }

@@ -6,13 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_cart_products } from "../store/reducers/cartReducer";
 import { useEffect } from "react";
 
-const Card = () => {
+const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
   const { cart_product_count } = useSelector((state) => state.cart);
 
-  const card_products = [1, 2];
+  const cart_products = [1, 2];
   const outOfStockProduct = [1, 2];
 
   useEffect(() => {
@@ -37,13 +37,13 @@ const Card = () => {
         <div className="absolute left-0 top-0 w-full h-full bg-[#2422228a]">
           <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
             <div className="flex flex-col justify-center gap-1 items-center h-full w-full text-white">
-              <h2 className="text-3xl font-bold">Card Page </h2>
+              <h2 className="text-3xl font-bold">Cart Page </h2>
               <div className="flex justify-center items-center gap-2 text-2xl w-full">
                 <Link to="/">Home</Link>
                 <span className="pt-1">
                   <IoIosArrowForward />
                 </span>
-                <span>Card </span>
+                <span>Cart </span>
               </div>
             </div>
           </div>
@@ -52,14 +52,14 @@ const Card = () => {
 
       <section className="bg-[#eeeeee]">
         <div className="w-[85%] lg:w-[90%] md:w-[90%] sm:w-[90%] mx-auto py-16">
-          {card_products.length > 0 || outOfStockProduct > 0 ? (
+          {cart_products.length > 0 || outOfStockProduct > 0 ? (
             <div className="flex flex-wrap">
               <div className="w-[67%] md-lg:w-full">
                 <div className="pr-3 md-lg:pr-0">
                   <div className="flex flex-col gap-3">
                     <div className="bg-white p-4">
                       <h2 className="text-md text-green-500 font-semibold">
-                        Stock Products {card_products.length}
+                        Stock Products {cart_products.length}
                       </h2>
                     </div>
                     {
@@ -70,7 +70,7 @@ const Card = () => {
                           </h2>
                         </div>
 
-                        {card_products.map((p, i) => (
+                        {cart_products.map((p, i) => (
                           <div key={i} className="w-full flex flex-wrap">
                             <div className="flex sm:w-full gap-2 w-7/12">
                               <div className="flex gap-2 justify-start items-center">
@@ -167,7 +167,7 @@ const Card = () => {
               </div>
               <div className="w-[33%] md-lg:w-full">
                 <div className="pl-3 md-lg:pl-0 md-lg:mt-5">
-                  {card_products.length > 0 && (
+                  {cart_products.length > 0 && (
                     <div className="bg-white p-3 text-slate-600 flex flex-col gap-3">
                       <h2 className="text-xl font-bold">Order Summary</h2>
                       <div className="flex justify-between items-center">
@@ -219,4 +219,4 @@ const Card = () => {
   );
 };
 
-export default Card;
+export default Cart;

@@ -45,9 +45,9 @@ const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { cart_product_count } = useSelector((state) => state.cart);
 
-  const redirect_card_page = () => {
+  const redirect_cart_page = () => {
     if (userInfo) {
-      navigate("/card");
+      navigate("/cart");
     } else {
       navigate("/login");
     }
@@ -223,7 +223,7 @@ const Header = () => {
                     <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
                       <span
                         className="text-xl text-green-500"
-                        onClick={redirect_card_page}
+                        onClick={redirect_cart_page}
                       >
                         <Link to={"/cart"}>
                           <FaCartShopping />

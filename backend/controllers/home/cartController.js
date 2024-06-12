@@ -64,6 +64,7 @@ class cartController {
           },
         },
       ]);
+
       let buy_product_item = 0;
       let calculatePrice = 0;
       let cart_product_count = 0;
@@ -93,15 +94,18 @@ class cartController {
         }
       } // end for
       let p = [];
+
+      // this will take unique seller
       let unique = [
         ...new Set(stockProduct.map((p) => p.products[0].sellerId.toString())),
       ];
+
       for (let i = 0; i < unique.length; i++) {
         let price = 0;
         for (let j = 0; j < stockProduct.length; j++) {
           const tempProduct = stockProduct[j].products[0];
           if (unique[i] === tempProduct.sellerId.toString()) {
-            let pri = 0; // total ( main ) price
+            let pri = 0;
             if (tempProduct.discount !== 0) {
               pri =
                 tempProduct.price -
@@ -144,6 +148,43 @@ class cartController {
         outOfStockProduct,
         buy_product_item,
       });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  // End Method
+
+  delete_cart_products = async (req, res) => {
+    const { cart_id } = req.params;
+    try {
+      await cartModel.findByIdAndDelete(cart_id);
+      responseReturn(res, 200, { message: "Product Remove Successfully" });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  // End Method
+
+  quantity_inc = async (req, res) => {
+    const { cart_id } = req.params;
+    try {
+      const product = await cartModel.findById(cart_id);
+      const { quantity } = product;
+      await cartModel.findByIdAndUpdate(cart_id, { quantity: quantity + 1 });
+      responseReturn(res, 200, { message: "Qty Updated" });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  // End Method
+
+  quantity_dec = async (req, res) => {
+    const { cart_id } = req.params;
+    try {
+      const product = await cartModel.findById(cart_id);
+      const { quantity } = product;
+      await cartModel.findByIdAndUpdate(cart_id, { quantity: quantity - 1 });
+      responseReturn(res, 200, { message: "Qty Updated" });
     } catch (error) {
       console.log(error.message);
     }

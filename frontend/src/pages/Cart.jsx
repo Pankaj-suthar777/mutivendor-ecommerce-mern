@@ -3,8 +3,15 @@ import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { get_cart_products } from "../store/reducers/cartReducer";
+import {
+  get_cart_products,
+  delete_cart_product,
+  messageClear,
+  quantity_inc,
+  quantity_dec,
+} from "../store/reducers/cartReducer";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -17,6 +24,7 @@ const Cart = () => {
     buy_product_item,
     shipping_fee,
     outofstock_products,
+    loading,
   } = useSelector((state) => state.cart);
 
   useEffect(() => {
@@ -34,6 +42,32 @@ const Cart = () => {
     });
   };
 
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      dispatch(get_cart_products(userInfo.id));
+    }
+  }, [successMessage, dispatch, userInfo.id]);
+
+  const inc = (quantity, stock, cart_id) => {
+    const temp = quantity + 1;
+    if (!loading) {
+      if (temp <= stock) {
+        dispatch(quantity_inc(cart_id));
+      }
+    }
+  };
+
+  const dec = (quantity, card_id) => {
+    const temp = quantity - 1;
+    if (!loading) {
+      if (temp !== 0) {
+        dispatch(quantity_dec(card_id));
+      }
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -47,7 +81,7 @@ const Cart = () => {
                 <span className="pt-1">
                   <IoIosArrowForward />
                 </span>
-                <span>Cart </span>
+                <span>Cart</span>
               </div>
             </div>
           </div>
@@ -103,7 +137,7 @@ const Cart = () => {
                                       (pt.productInfo.price *
                                         pt.productInfo.discount) /
                                         100
-                                    )}{" "}
+                                    )}
                                 </h2>
                                 <p className="line-through">
                                   ${pt.productInfo.price}
@@ -112,11 +146,32 @@ const Cart = () => {
                               </div>
                               <div className="flex gap-2 flex-col">
                                 <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
-                                  <div className="px-3 cursor-pointer">-</div>
+                                  <div
+                                    onClick={() => dec(pt.quantity, pt._id)}
+                                    className="px-3 cursor-pointer"
+                                  >
+                                    -
+                                  </div>
                                   <div className="px-3">{pt.quantity}</div>
-                                  <div className="px-3 cursor-pointer">+</div>
+                                  <div
+                                    className="px-3 cursor-pointer"
+                                    onClick={() =>
+                                      inc(
+                                        pt.quantity,
+                                        pt.productInfo.stock,
+                                        pt._id
+                                      )
+                                    }
+                                  >
+                                    +
+                                  </div>
                                 </div>
-                                <button className="px-5 py-[3px] bg-red-500 text-white">
+                                <button
+                                  className="px-5 py-[3px] bg-red-500 text-white"
+                                  onClick={() =>
+                                    dispatch(delete_cart_product(pt._id))
+                                  }
+                                >
                                   Delete
                                 </button>
                               </div>
@@ -172,11 +227,21 @@ const Cart = () => {
                                 </div>
                                 <div className="flex gap-2 flex-col">
                                   <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
-                                    <div className="px-3 cursor-pointer">-</div>
+                                    <div
+                                      className="px-3 cursor-pointer"
+                                      onClick={() => dec(p.quantity, p._id)}
+                                    >
+                                      -
+                                    </div>
                                     <div className="px-3">{p.quantity}</div>
                                     <div className="px-3 cursor-pointer">+</div>
                                   </div>
-                                  <button className="px-5 py-[3px] bg-red-500 text-white">
+                                  <button
+                                    className="px-5 py-[3px] bg-red-500 text-white"
+                                    onClick={() =>
+                                      dispatch(delete_cart_product(p._id))
+                                    }
+                                  >
                                     Delete
                                   </button>
                                 </div>
@@ -195,12 +260,12 @@ const Cart = () => {
                     <div className="bg-white p-3 text-slate-600 flex flex-col gap-3">
                       <h2 className="text-xl font-bold">Order Summary</h2>
                       <div className="flex justify-between items-center">
-                        <span>2 Items </span>
-                        <span>$343 </span>
+                        <span>{buy_product_item} Items </span>
+                        <span>${price} </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span>Shipping Fee </span>
-                        <span>$40 </span>
+                        <span>${shipping_fee} </span>
                       </div>
                       <div className="flex gap-2">
                         <input
@@ -215,13 +280,15 @@ const Cart = () => {
 
                       <div className="flex justify-between items-center">
                         <span>Total</span>
-                        <span className="text-lg text-[#059473]">$430 </span>
+                        <span className="text-lg text-[#059473]">
+                          ${price + shipping_fee}
+                        </span>
                       </div>
                       <button
                         onClick={redirect}
                         className="px-5 py-[6px] rounded-sm hover:shadow-red-500/50 hover:shadow-lg bg-red-500 text-sm text-white uppercase "
                       >
-                        Process to Checkout
+                        Process to Checkout({buy_product_item})
                       </button>
                     </div>
                   )}

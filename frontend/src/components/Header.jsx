@@ -34,7 +34,9 @@ const Header = () => {
 
   const wishlist_count = 8;
 
-  const [searchValue, setSearchValue] = useState("");
+  const alreadySearched = searchParams.get("value");
+
+  const [searchValue, setSearchValue] = useState(alreadySearched);
   const [category, setCategory] = useState(
     categoryFromPara ? categoryFromPara : ""
   );

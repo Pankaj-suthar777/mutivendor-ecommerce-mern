@@ -43,7 +43,7 @@ class cartController {
   // End Method
 
   get_cart_products = async (req, res) => {
-    const co = 5; //profile for admin
+    const co = 5; // profite for admin
     const { userId } = req.params;
     try {
       const cart_products = await cartModel.aggregate([
@@ -64,7 +64,7 @@ class cartController {
           },
         },
       ]);
-
+      console.log("cart_products", cart_products);
       let buy_product_item = 0;
       let calculatePrice = 0;
       let cart_product_count = 0;
@@ -93,8 +93,8 @@ class cartController {
           calculatePrice = calculatePrice + quantity * price;
         }
       } // end for
-      let p = [];
 
+      let p = [];
       // this will take unique seller
       let unique = [
         ...new Set(stockProduct.map((p) => p.products[0].sellerId.toString())),

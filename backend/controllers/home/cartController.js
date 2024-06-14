@@ -64,10 +64,10 @@ class cartController {
           },
         },
       ]);
-      console.log("cart_products", cart_products);
       let buy_product_item = 0;
       let calculatePrice = 0;
       let cart_product_count = 0;
+
       const outOfStockProduct = cart_products.filter(
         (p) => p.products[0].stock < p.quantity
       );
@@ -75,6 +75,7 @@ class cartController {
       for (let i = 0; i < outOfStockProduct.length; i++) {
         cart_product_count = cart_product_count + outOfStockProduct[i].quantity;
       }
+
       const stockProduct = cart_products.filter(
         (p) => p.products[0].stock >= p.quantity
       );
@@ -95,10 +96,10 @@ class cartController {
       } // end for
 
       let p = [];
-      // this will take unique seller
+
       let unique = [
         ...new Set(stockProduct.map((p) => p.products[0].sellerId.toString())),
-      ];
+      ]; // this will take unique seller
 
       for (let i = 0; i < unique.length; i++) {
         let price = 0;

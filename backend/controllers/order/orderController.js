@@ -1,5 +1,7 @@
 const authOrderModel = require("../../models/authOrder");
 const customerOrder = require("../../models/customerOrder");
+const cartModel = require("../../models/cartModel");
+const { responseReturn } = require("../../utils/response");
 const moment = require("moment");
 
 class orderController {
@@ -46,6 +48,7 @@ class orderController {
         }
       }
     }
+
     try {
       const order = await customerOrder.create({
         customerId: userId,
@@ -56,11 +59,13 @@ class orderController {
         delivery_status: "pending",
         date: tempDate,
       });
+
       for (let i = 0; i < products.length; i++) {
         const pro = products[i].products;
         const pri = products[i].price;
         const sellerId = products[i].sellerId;
         let storePor = [];
+
         for (let j = 0; j < pro.length; j++) {
           const tempPro = pro[j].productInfo;
           tempPro.quantity = pro[j].quantity;
@@ -81,7 +86,7 @@ class orderController {
 
       await authOrderModel.insertMany(authorOrderData);
       for (let k = 0; k < cartId.length; k++) {
-        await cardModel.findByIdAndDelete(cartId[k]);
+        await cartModel.findByIdAndDelete(cartId[k]);
       }
 
       setTimeout(() => {

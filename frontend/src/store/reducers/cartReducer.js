@@ -71,6 +71,19 @@ export const quantity_dec = createAsyncThunk(
 );
 // End Method
 
+export const add_to_wishlist = createAsyncThunk(
+  "cart/add_to_wishlist",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/home/product/add-to-wishlist", info);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// End Method
+
 export const cartReducer = createSlice({
   name: "cart",
   initialState: {
@@ -130,6 +143,14 @@ export const cartReducer = createSlice({
       .addCase(quantity_dec.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.successMessage = payload.message;
+      })
+      .addCase(add_to_wishlist.rejected, (state, { payload }) => {
+        state.errorMessage = payload.error;
+      })
+      .addCase(add_to_wishlist.fulfilled, (state, { payload }) => {
+        state.successMessage = payload.message;
+        state.wishlist_count =
+          state.wishlist_count > 0 ? state.wishlist_count + 1 : 1;
       });
   },
 });

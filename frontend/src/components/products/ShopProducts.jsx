@@ -47,7 +47,11 @@ const ShopProducts = ({ styles, products }) => {
           </div>
 
           <div className="flex justify-start items-start flex-col gap-1">
-            <h2 className="font-bold">{p.name} </h2>
+            <h2 className="font-bold">
+              {styles === "grid" && p.name.slice(0, 60)}{" "}
+              {styles === "grid" && p.name.length > 60 ? "..." : ""}
+              {styles !== "grid" && p.name}
+            </h2>
             <div className="flex justify-start items-center gap-3">
               <span className="text-md font-semibold">${p.price}</span>
               <div className="flex">

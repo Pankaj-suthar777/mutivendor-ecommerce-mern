@@ -275,6 +275,9 @@ const Details = () => {
                   {product?.description?.slice(0, 600)}
                   <span>{product.description?.length > 600 && " ..."}</span>
                 </p>
+                <p className="text-slate-600 py-1 font-bold">
+                  Shop Name : {product.shopName}
+                </p>
               </div>
 
               <div className="flex gap-3 pb-10 border-b">

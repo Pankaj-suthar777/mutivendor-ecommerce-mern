@@ -88,6 +88,21 @@ export const customer_review = createAsyncThunk(
 );
 // End Method
 
+export const get_reviews = createAsyncThunk(
+  "review/get_reviews",
+  async ({ productId, pageNumber }, { fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(
+        `/home/customer/get-reviews/${productId}?pageNo=${pageNumber}`
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      console.log(error.respone);
+    }
+  }
+);
+// End Method
+
 export const homeReducer = createSlice({
   name: "home",
   initialState: {
@@ -109,7 +124,7 @@ export const homeReducer = createSlice({
     errorMessage: "",
     successMessage: "",
 
-    totalReivew: 0,
+    totalReview: 0,
     rating_review: [],
     reviews: [],
   },
@@ -146,6 +161,11 @@ export const homeReducer = createSlice({
       })
       .addCase(customer_review.fulfilled, (state, { payload }) => {
         state.successMessage = payload.message;
+      })
+      .addCase(get_reviews.fulfilled, (state, { payload }) => {
+        state.reviews = payload.reviews;
+        state.totalReview = payload.totalReview;
+        state.rating_review = payload.rating_review;
       });
   },
 });

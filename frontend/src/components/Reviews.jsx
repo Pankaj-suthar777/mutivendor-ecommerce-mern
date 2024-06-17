@@ -91,7 +91,7 @@ const Reviews = ({ product }) => {
                     (100 * (rating_review[0]?.sum || 0)) / totalReview
                   )}%`,
                 }}
-                className="h-full bg-[#Edbb0E] "
+                className="h-full bg-[#Edbb0E]"
               ></div>
             </div>
             <p className="text-sm text-slate-600 w-[0%]">
@@ -110,7 +110,7 @@ const Reviews = ({ product }) => {
                     (100 * (rating_review[1]?.sum || 0)) / totalReview
                   )}%`,
                 }}
-                className="h-full bg-[#Edbb0E] "
+                className="h-full bg-[#Edbb0E]"
               ></div>
             </div>
             <p className="text-sm text-slate-600 w-[0%]">
@@ -129,7 +129,7 @@ const Reviews = ({ product }) => {
                     (100 * (rating_review[2]?.sum || 0)) / totalReview
                   )}%`,
                 }}
-                className="h-full bg-[#Edbb0E] "
+                className="h-full bg-[#Edbb0E]"
               ></div>
             </div>
             <p className="text-sm text-slate-600 w-[0%]">
@@ -148,7 +148,7 @@ const Reviews = ({ product }) => {
                     (100 * (rating_review[3]?.sum || 0)) / totalReview
                   )}%`,
                 }}
-                className="h-full bg-[#Edbb0E] "
+                className="h-full bg-[#Edbb0E]"
               ></div>
             </div>
             <p className="text-sm text-slate-600 w-[0%]">
@@ -167,7 +167,7 @@ const Reviews = ({ product }) => {
                     (100 * (rating_review[4]?.sum || 0)) / totalReview
                   )}%`,
                 }}
-                className="h-full bg-[#Edbb0E] "
+                className="h-full bg-[#Edbb0E]"
               ></div>
             </div>
             <p className="text-sm text-slate-600 w-[0%]">
@@ -186,7 +186,7 @@ const Reviews = ({ product }) => {
                     (100 * (rating_review[5]?.sum || 0)) / totalReview
                   )}%`,
                 }}
-                className="h-full bg-[#Edbb0E] ]"
+                className="h-full bg-[#Edbb0E]"
               ></div>
             </div>
             <p className="text-sm text-slate-600 w-[0%]">

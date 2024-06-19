@@ -5,10 +5,26 @@ import { IoSend } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import io from "socket.io-client";
-import { add_friend, send_message } from "../../store/reducers/chatReducer";
+import {
+  add_friend,
+  messageClear,
+  send_message,
+  updateMessage,
+} from "../../store/reducers/chatReducer";
 const socket = io("http://localhost:5000");
+import toast from "react-hot-toast";
+import { useRef } from "react";
 
 const Chat = () => {
+  const [receverMessage, setReceverMessage] = useState("");
+  const [activeSeller, setActiveSeller] = useState([]);
+
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [fb_messages]);
+
   const [text, setText] = useState("");
   const dispatch = useDispatch();
   const { sellerId } = useParams();
@@ -44,6 +60,36 @@ const Chat = () => {
     }
   };
 
+  useEffect(() => {
+    socket.on("seller_message", (msg) => {
+      setReceverMessage(msg);
+    });
+    socket.on("activeSeller", (sellers) => {
+      setActiveSeller(sellers);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (successMessage) {
+      socket.emit("send_customer_message", fb_messages[fb_messages.length - 1]);
+      dispatch(messageClear());
+    }
+  }, [successMessage, dispatch, fb_messages]);
+
+  useEffect(() => {
+    if (receverMessage) {
+      if (
+        sellerId === receverMessage.senderId &&
+        userInfo.id === receverMessage.receverId
+      ) {
+        dispatch(updateMessage(receverMessage));
+      } else {
+        toast.success(receverMessage.senderName + " " + "Send A message");
+        dispatch(messageClear());
+      }
+    }
+  }, [receverMessage, sellerId, dispatch, userInfo.id]);
+
   return (
     <div className="bg-white p-3 rounded-md">
       <div className="w-full flex">
@@ -62,7 +108,9 @@ const Chat = () => {
                 className={`flex gap-2 justify-start items-center pl-2 py-[5px]`}
               >
                 <div className="w-[30px] h-[30px] rounded-full relative">
-                  <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                  {activeSeller.some((c) => c.sellerId === f.fdId) && (
+                    <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                  )}
 
                   <img src={f.image} alt="" />
                 </div>
@@ -76,7 +124,9 @@ const Chat = () => {
             <div className="w-full h-full">
               <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                 <div className="w-[30px] h-[30px] rounded-full relative">
-                  <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                  {activeSeller.some((c) => c.sellerId === currentFd.fdId) && (
+                    <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                  )}
 
                   <img src={currentFd.image} alt="" />
                 </div>
@@ -88,6 +138,7 @@ const Chat = () => {
                     if (currentFd?.fdId !== m.receverId) {
                       return (
                         <div
+                          ref={scrollRef}
                           key={i}
                           className="w-full flex gap-2 justify-start items-center text-[14px]"
                         >
@@ -104,6 +155,7 @@ const Chat = () => {
                     } else {
                       return (
                         <div
+                          ref={scrollRef}
                           key={i}
                           className="w-full flex gap-2 justify-end items-center text-[14px]"
                         >

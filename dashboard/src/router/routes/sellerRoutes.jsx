@@ -75,7 +75,7 @@ export const sellerRoutes = [
     status: "active",
   },
   {
-    path: "/seller/dashboard/chat-customer/:customerId",
+    path: "/seller/dashboard/chat-customer",
     element: <SellerToCustomer />,
     role: "seller",
     status: "active",

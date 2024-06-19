@@ -1,5 +1,5 @@
 const ChatController = require("../controllers/chat/ChatController");
-const { authMiddleware } = require("../middleware/authMiddleware");
+const { authMidleware } = require("../middleware/authMiddleware");
 const router = require("express").Router();
 
 router.post(
@@ -20,8 +20,13 @@ router.get(
 );
 router.get(
   "/chat/seller/get-customer-message/:customerId",
-  authMiddleware,
+  authMidleware,
   ChatController.get_customers_seller_message
+);
+router.post(
+  "/chat/seller/send-message-to-customer",
+  authMidleware,
+  ChatController.seller_message_add
 );
 
 module.exports = router;

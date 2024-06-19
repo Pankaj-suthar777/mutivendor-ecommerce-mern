@@ -1,21 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaList } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_customers,
   get_customer_message,
+  send_message,
+  messageClear,
+  updateMessage,
 } from "../../store/Reducers/chatReducer";
 import { Link, useParams } from "react-router-dom";
+import { socket } from "../../utils/utils";
+import toast from "react-hot-toast";
 
 const SellerToCustomer = () => {
+  const [text, setText] = useState("");
   const { customerId } = useParams();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const sellerId = 65;
+  const [receverMessage, setReceverMessage] = useState("");
 
   const { userInfo } = useSelector((state) => state.auth);
-  const { customers } = useSelector((state) => state.chat);
+  const { customers, messages, currentCustomer, successMessage } = useSelector(
+    (state) => state.chat
+  );
 
   useEffect(() => {
     dispatch(get_customers(userInfo._id));
@@ -26,6 +35,52 @@ const SellerToCustomer = () => {
       dispatch(get_customer_message(customerId));
     }
   }, [customerId, dispatch]);
+
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const send = (e) => {
+    e.preventDefault();
+    dispatch(
+      send_message({
+        senderId: userInfo._id,
+        receverId: customerId,
+        text,
+        name: userInfo?.shopInfo?.shopName,
+      })
+    );
+    setText("");
+  };
+
+  useEffect(() => {
+    if (successMessage) {
+      socket.emit("send_seller_message", messages[messages.length - 1]);
+      dispatch(messageClear());
+    }
+  }, [successMessage, dispatch, messages]);
+
+  useEffect(() => {
+    socket.on("customer_message", (msg) => {
+      setReceverMessage(msg);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (receverMessage) {
+      if (
+        customerId === receverMessage.senderId &&
+        userInfo._id === receverMessage.receverId
+      ) {
+        dispatch(updateMessage(receverMessage));
+      } else {
+        toast.success(receverMessage.senderName + " " + "Send A message");
+        dispatch(messageClear());
+      }
+    }
+  }, [receverMessage, dispatch, userInfo._id, customerId]);
 
   return (
     <div className="px-2 lg:px-7 py-5">
@@ -83,7 +138,10 @@ const SellerToCustomer = () => {
                       alt=""
                     />
                     <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
-                  </div>
+                  </div>{" "}
+                  <h2 className="text-base text-white font-semibold">
+                    {currentCustomer?.name}
+                  </h2>
                 </div>
               )}
 
@@ -92,62 +150,71 @@ const SellerToCustomer = () => {
                 className="w-[35px] flex md:hidden h-[35px] rounded-sm bg-blue-500 shadow-lg hover:shadow-blue-500/50 justify-center cursor-pointer items-center text-white"
               >
                 <span>
-                  <FaList />{" "}
+                  <FaList />
                 </span>
               </div>
             </div>
 
             <div className="py-4">
               <div className="bg-[#475569] h-[calc(100vh-290px)] rounded-md p-3 overflow-y-auto">
-                <div className="w-full flex justify-start items-center">
-                  <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
-                    <div>
-                      <img
-                        className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
-                        src="/images/demo.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex justify-center items-start flex-col w-full bg-blue-500 shadow-lg shadow-blue-500/50 text-white py-1 px-2 rounded-sm">
-                      <span>How Are you ? </span>
-                    </div>
+                {customerId ? (
+                  messages.map((m, i) => {
+                    if (m.senderId === customerId) {
+                      return (
+                        <div
+                          key={i}
+                          ref={scrollRef}
+                          className="w-full flex justify-start items-center"
+                        >
+                          <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
+                            <div>
+                              <img
+                                className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
+                                src="/images/demo.jpg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="flex justify-center items-start flex-col w-full bg-blue-500 shadow-lg shadow-blue-500/50 text-white py-1 px-2 rounded-sm">
+                              <span>{m.message}</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          key={i}
+                          ref={scrollRef}
+                          className="w-full flex justify-end items-center"
+                        >
+                          <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
+                            <div className="flex justify-center items-start flex-col w-full bg-red-500 shadow-lg shadow-red-500/50 text-white py-1 px-2 rounded-sm">
+                              <span>{m.message} </span>
+                            </div>
+                            <div>
+                              <img
+                                className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
+                                src="/images/admin.jpg"
+                                alt=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                  })
+                ) : (
+                  <div className="w-full h-full flex justify-center items-center text-white gap-2 flex-col">
+                    <span>Select Customer </span>
                   </div>
-                </div>
-
-                <div className="w-full flex justify-end items-center">
-                  <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
-                    <div className="flex justify-center items-start flex-col w-full bg-red-500 shadow-lg shadow-red-500/50 text-white py-1 px-2 rounded-sm">
-                      <span>How Are you ? </span>
-                    </div>
-                    <div>
-                      <img
-                        className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
-                        src="/images/admin.jpg"
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full flex justify-start items-center">
-                  <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
-                    <div>
-                      <img
-                        className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
-                        src="/images/demo.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex justify-center items-start flex-col w-full bg-blue-500 shadow-lg shadow-blue-500/50 text-white py-1 px-2 rounded-sm">
-                      <span>I Need some help </span>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
-            <form className="flex gap-3">
+            <form onSubmit={send} className="flex gap-3">
               <input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
                 className="w-full flex justify-between px-2 border border-slate-700 items-center py-[5px] focus:border-blue-500 rounded-md outline-none bg-transparent text-[#d0d2d6]"
                 type="text"
                 placeholder="Input Your Message"

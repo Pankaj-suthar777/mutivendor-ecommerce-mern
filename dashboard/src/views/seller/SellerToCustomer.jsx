@@ -1,10 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaList } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  get_customers,
+  get_customer_message,
+} from "../../store/Reducers/chatReducer";
+import { Link, useParams } from "react-router-dom";
 
 const SellerToCustomer = () => {
+  const { customerId } = useParams();
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const sellerId = 65;
+
+  const { userInfo } = useSelector((state) => state.auth);
+  const { customers } = useSelector((state) => state.chat);
+
+  useEffect(() => {
+    dispatch(get_customers(userInfo._id));
+  }, [dispatch, userInfo._id]);
+
+  useEffect(() => {
+    if (customerId) {
+      dispatch(get_customer_message(customerId));
+    }
+  }, [customerId, dispatch]);
 
   return (
     <div className="px-2 lg:px-7 py-5">
@@ -26,63 +47,28 @@ const SellerToCustomer = () => {
                 </span>
               </div>
 
-              <div
-                className={`h-[60px] flex justify-start gap-2 items-center text-white px-2 py-2 rounded-md cursor-pointer bg-[#8288ed] `}
-              >
-                <div className="relative">
-                  <img
-                    className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full"
-                    src="/images/admin.jpg"
-                    alt=""
-                  />
-                  <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
-                </div>
-
-                <div className="flex justify-center items-start flex-col w-full">
-                  <div className="flex justify-between items-center w-full">
-                    <h2 className="text-base font-semibold">Kazi Ariyan</h2>
+              {customers.map((c, i) => (
+                <Link
+                  key={i}
+                  to={`/seller/dashboard/chat-customer/${c.fdId}`}
+                  className={`h-[60px] flex justify-start gap-2 items-center text-white px-2 py-2 rounded-md cursor-pointer bg-[#8288ed] `}
+                >
+                  <div className="relative">
+                    <img
+                      className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full"
+                      src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+                      alt=""
+                    />
+                    <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
                   </div>
-                </div>
-              </div>
 
-              <div
-                className={`h-[60px] flex justify-start gap-2 items-center text-white px-2 py-2 rounded-sm cursor-pointer`}
-              >
-                <div className="relative">
-                  <img
-                    className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full"
-                    src="/images/admin.jpg"
-                    alt=""
-                  />
-                  <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
-                </div>
-
-                <div className="flex justify-center items-start flex-col w-full">
-                  <div className="flex justify-between items-center w-full">
-                    <h2 className="text-base font-semibold">Jhon</h2>
+                  <div className="flex justify-center items-start flex-col w-full">
+                    <div className="flex justify-between items-center w-full">
+                      <h2 className="text-base font-semibold">{c.name}</h2>
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <div
-                className={`h-[60px] flex justify-start gap-2 items-center text-white px-2 py-2 rounded-sm cursor-pointer`}
-              >
-                <div className="relative">
-                  <img
-                    className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full"
-                    src="/images/admin.jpg"
-                    alt=""
-                  />
-                  <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
-                </div>
-                <h2 className="text-base text-white font-semibold">Pankaj</h2>
-
-                <div className="flex justify-center items-start flex-col w-full">
-                  <div className="flex justify-between items-center w-full">
-                    <h2 className="text-base font-semibold">Raju</h2>
-                  </div>
-                </div>
-              </div>
+                </Link>
+              ))}
             </div>
           </div>
 

@@ -2,14 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_seller_message,
+  messageClear,
   send_message_seller_admin,
+  updateAdminMessage,
 } from "../../store/Reducers/chatReducer";
+import { socket } from "../../utils/utils";
 
 const SellerToAdmin = () => {
   const scrollRef = useRef();
   const dispatch = useDispatch();
   const [text, setText] = useState("");
-  const { seller_admin_message } = useSelector((state) => state.chat);
+  const { seller_admin_message, successMessage } = useSelector(
+    (state) => state.chat
+  );
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -33,6 +38,28 @@ const SellerToAdmin = () => {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [seller_admin_message]);
+
+  useEffect(() => {
+    socket.on("receved_admin_message", (msg) => {
+      dispatch(updateAdminMessage(msg));
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (successMessage) {
+      socket.emit(
+        "send_message_seller_to_admin",
+        seller_admin_message[seller_admin_message.length - 1]
+      );
+      dispatch(messageClear());
+    }
+  }, [successMessage, dispatch, seller_admin_message]);
+
+  useEffect(() => {
+    socket.on("receved_admin_message", (msg) => {
+      dispatch(updateAdminMessage(msg));
+    });
+  }, [dispatch]);
 
   return (
     <div className="px-2 lg:px-7 py-5">

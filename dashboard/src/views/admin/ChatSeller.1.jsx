@@ -6,15 +6,11 @@ import {
   get_sellers,
   send_message_seller_admin,
   get_admin_message,
-  messageClear,
-  updateSellerMessage,
 } from "../../store/Reducers/chatReducer";
 import { Link, useParams } from "react-router-dom";
 import { FaRegFaceGrinHearts } from "react-icons/fa6";
-import { socket } from "../../utils/utils";
-import toast from "react-hot-toast";
 
-const ChatSeller = () => {
+export const ChatSeller = () => {
   const {
     sellers,
     activeSeller,
@@ -52,40 +48,9 @@ const ChatSeller = () => {
     }
   }, [sellerId, dispatch]);
 
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [seller_admin_message]);
-
-  useEffect(() => {
-    if (successMessage) {
-      socket.emit(
-        "send_message_admin_to_seller",
-        seller_admin_message[seller_admin_message.length - 1]
-      );
-      dispatch(messageClear());
-    }
-  }, [successMessage, dispatch, seller_admin_message]);
-
-  useEffect(() => {
-    socket.on("receved_seller_message", (msg) => {
-      setReceverMessage(msg);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (receverMessage) {
-      if (
-        receverMessage.senderId === sellerId &&
-        receverMessage.receverId === ""
-      ) {
-        dispatch(updateSellerMessage(receverMessage));
-      } else {
-        toast.success(receverMessage.senderName + " " + "Send A message");
-        dispatch(messageClear());
-      }
-    }
-  }, [receverMessage, dispatch, sellerId]);
-
+  // useEffect(() => {
+  //   scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [seller_admin_message]);
   return (
     <div className="px-2 lg:px-7 py-5">
       <div className="w-full  bg-[#6a5fdf] px-4 py-4 rounded-md h-[calc(100vh-140px)]">
@@ -169,7 +134,7 @@ const ChatSeller = () => {
                       return (
                         <div
                           key={i}
-                          ref={scrollRef}
+                          //ref={scrollRef}
                           className="w-full flex justify-start items-center"
                         >
                           <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
@@ -190,7 +155,7 @@ const ChatSeller = () => {
                       return (
                         <div
                           key={i}
-                          ref={scrollRef}
+                          //ref={scrollRef}
                           className="w-full flex justify-end items-center"
                         >
                           <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
@@ -241,5 +206,3 @@ const ChatSeller = () => {
     </div>
   );
 };
-
-export default ChatSeller;

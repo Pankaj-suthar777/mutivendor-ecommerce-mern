@@ -21,10 +21,6 @@ const Chat = () => {
 
   const scrollRef = useRef();
 
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [fb_messages]);
-
   const [text, setText] = useState("");
   const dispatch = useDispatch();
   const { sellerId } = useParams();
@@ -89,6 +85,10 @@ const Chat = () => {
       }
     }
   }, [receverMessage, sellerId, dispatch, userInfo.id]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [fb_messages]);
 
   return (
     <div className="bg-white p-3 rounded-md">

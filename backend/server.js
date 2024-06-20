@@ -26,6 +26,7 @@ const io = socket(server, {
 
 var allCustomer = [];
 var allSeller = [];
+let admin = {};
 
 const addUser = (customerId, socketId, userInfo) => {
   const checkUser = allCustomer.some((u) => u.customerId === customerId);
@@ -64,14 +65,17 @@ const remove = (socketId) => {
 
 io.on("connection", (soc) => {
   console.log("socket server running...");
+
   soc.on("add_user", (customerId, userInfo) => {
     addUser(customerId, soc.id, userInfo);
     io.emit("activeSeller", allSeller);
   });
+
   soc.on("add_seller", (sellerId, userInfo) => {
     addSeller(sellerId, soc.id, userInfo);
     io.emit("activeSeller", allSeller);
   });
+
   soc.on("send_seller_message", (msg) => {
     const customer = findCustomer(msg.receverId);
     if (customer !== undefined) {
@@ -83,6 +87,13 @@ io.on("connection", (soc) => {
     if (seller !== undefined) {
       soc.to(seller.socketId).emit("customer_message", msg);
     }
+  });
+  soc.on("add_admin", (adminInfo) => {
+    delete adminInfo.email;
+    delete adminInfo.password;
+    admin = adminInfo;
+    admin.socketId = soc.id;
+    io.emit("activeSeller", allSeller);
   });
   soc.on("disconnect", () => {
     console.log("user disconnect");

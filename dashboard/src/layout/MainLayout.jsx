@@ -1,12 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import { socket } from "../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCustomer, updateSellers } from "../store/Reducers/chatReducer";
+import {
+  updateAdminMessage,
+  updateCustomer,
+  updateSellers,
+} from "../store/Reducers/chatReducer";
+import toast from "react-hot-toast";
 
 const MainLayout = () => {
+  const { pathname } = useLocation();
+  const [recMsg, setRecMsg] = useState("");
   const dispatch = useDispatch();
 
   const [showSidebar, setShowSidebar] = useState(false);
@@ -29,6 +36,26 @@ const MainLayout = () => {
       dispatch(updateSellers(sellers));
     });
   });
+
+  useEffect(() => {
+    socket.on("receved_admin_message", (msg) => {
+      setRecMsg(msg);
+    });
+  }, [dispatch, pathname]);
+
+  useEffect(() => {
+    if (recMsg) {
+      dispatch(updateAdminMessage(recMsg));
+    }
+  }, [recMsg, dispatch]);
+
+  useEffect(() => {
+    if (recMsg !== "") {
+      if (pathname !== "/seller/dashboard/chat-support") {
+        toast.success("Admin send you a Message");
+      }
+    }
+  }, [pathname, recMsg]);
 
   return (
     <div className="bg-[#cdcae9] w-full min-h-screen">

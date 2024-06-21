@@ -4,7 +4,7 @@ import {
   get_seller_message,
   messageClear,
   send_message_seller_admin,
-  updateAdminMessage,
+  // updateAdminMessage,
 } from "../../store/Reducers/chatReducer";
 import { socket } from "../../utils/utils";
 
@@ -39,11 +39,11 @@ const SellerToAdmin = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [seller_admin_message]);
 
-  useEffect(() => {
-    socket.on("receved_admin_message", (msg) => {
-      dispatch(updateAdminMessage(msg));
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   socket.on("receved_admin_message", (msg) => {
+  //     dispatch(updateAdminMessage(msg));
+  //   });
+  // }, [dispatch]);
 
   useEffect(() => {
     if (successMessage) {
@@ -54,12 +54,6 @@ const SellerToAdmin = () => {
       dispatch(messageClear());
     }
   }, [successMessage, dispatch, seller_admin_message]);
-
-  useEffect(() => {
-    socket.on("receved_admin_message", (msg) => {
-      dispatch(updateAdminMessage(msg));
-    });
-  }, [dispatch]);
 
   return (
     <div className="px-2 lg:px-7 py-5">

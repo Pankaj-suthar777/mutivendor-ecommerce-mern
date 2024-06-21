@@ -13,4 +13,12 @@ router.post(
   authMidleware,
   sellerController.seller_status_update
 );
+router.get("/get-sellers", authMidleware, sellerController.get_active_sellers);
+
+router.get(
+  "/get-deactive-sellers",
+  authMidleware,
+  sellerController.get_deactive_sellers
+);
+
 module.exports = router;

@@ -159,7 +159,7 @@ const Sellers = () => {
               pageNumber={currentPage}
               setPageNumber={setCurrentPage}
               totalItem={totalSeller}
-              parPage={parPage}
+              perPage={parPage}
               showItem={4}
             />
           </div>

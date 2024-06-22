@@ -17,9 +17,8 @@ import Search from "../components/Search";
 
 const Category = () => {
   const dispatch = useDispatch();
-  const { loader, successMessage, errorMessage, categorys } = useSelector(
-    (state) => state.category
-  );
+  const { loader, successMessage, errorMessage, categorys, totalCategory } =
+    useSelector((state) => state.category);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
@@ -158,7 +157,7 @@ const Category = () => {
               <Pagination
                 pageNumber={currentPage}
                 setPageNumber={setCurrentPage}
-                totalItem={50}
+                totalItem={totalCategory}
                 perPage={perPage}
                 showItem={4}
               />

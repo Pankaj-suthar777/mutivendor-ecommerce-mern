@@ -304,6 +304,18 @@ class orderController {
     }
   };
   // End Method
+
+  get_seller_order = async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+      const order = await authOrderModel.findById(orderId);
+      responseReturn(res, 200, { order });
+    } catch (error) {
+      console.log("get seller details error" + error.message);
+    }
+  };
+  // End Method
 }
 
 module.exports = new orderController();

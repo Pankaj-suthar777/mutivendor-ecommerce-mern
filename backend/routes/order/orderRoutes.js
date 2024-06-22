@@ -26,5 +26,9 @@ router.put(
 
 // Seller
 router.get("/seller/orders/:sellerId", orderController.get_seller_orders);
-
+router.get("/seller/order/:orderId", orderController.get_seller_order);
+router.put(
+  "/seller/order-status/update/:orderId",
+  orderController.seller_order_status_update
+);
 module.exports = router;

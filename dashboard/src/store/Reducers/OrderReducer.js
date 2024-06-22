@@ -9,7 +9,7 @@ export const get_admin_orders = createAsyncThunk(
   ) => {
     try {
       const { data } = await api.get(
-        `/admin/orders?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
+        `/admin/orders?page=${page}&searchValue=${searchValue}&parPage=${parPage}`,
         { withCredentials: true }
       );
       return fulfillWithValue(data);
@@ -28,6 +28,41 @@ export const get_admin_order = createAsyncThunk(
       const { data } = await api.get(`/admin/order/${orderId}`, {
         withCredentials: true,
       });
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// End Method
+
+export const admin_order_status_update = createAsyncThunk(
+  "orders/admin_order_status_updateinfo",
+  async ({ orderId, info }, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.put(
+        `/admin/order-status/update/${orderId}`,
+        info
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// End Method
+
+export const get_seller_orders = createAsyncThunk(
+  "orders/get_seller_orders",
+  async (
+    { parPage, page, searchValue, sellerId },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const { data } = await api.get(
+        `/seller/orders/${sellerId}?page=${page}&searchValue=${searchValue}&parPage=${parPage}`,
+        { withCredentials: true }
+      );
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -59,6 +94,16 @@ export const OrderReducer = createSlice({
       })
       .addCase(get_admin_order.fulfilled, (state, { payload }) => {
         state.order = payload.order;
+      })
+      .addCase(admin_order_status_update.rejected, (state, { payload }) => {
+        state.errorMessage = payload.message;
+      })
+      .addCase(admin_order_status_update.fulfilled, (state, { payload }) => {
+        state.successMessage = payload.message;
+      })
+      .addCase(get_seller_orders.fulfilled, (state, { payload }) => {
+        state.myOrders = payload.orders;
+        state.totalOrder = payload.totalOrder;
       });
   },
 });

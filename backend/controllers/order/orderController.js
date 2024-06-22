@@ -256,6 +256,54 @@ class orderController {
     }
   };
   // End Method
+
+  admin_order_status_update = async (req, res) => {
+    const { orderId } = req.params;
+    const { status } = req.body;
+    try {
+      await customerOrder.findByIdAndUpdate(orderId, {
+        delivery_status: status,
+      });
+      responseReturn(res, 200, { message: "order Status change success" });
+    } catch (error) {
+      console.log("get admin status error" + error.message);
+      responseReturn(res, 500, { message: "internal server error" });
+    }
+  };
+  // End Method
+
+  get_seller_orders = async (req, res) => {
+    const { sellerId } = req.params;
+
+    let { page, searchValue, parPage } = req.query;
+    page = parseInt(page);
+    parPage = parseInt(parPage);
+
+    const skipPage = parPage * (page - 1);
+    try {
+      if (searchValue) {
+      } else {
+        const orders = await authOrderModel
+          .find({
+            sellerId,
+          })
+          .skip(skipPage)
+          .limit(parPage)
+          .sort({ createdAt: -1 });
+
+        const totalOrder = await authOrderModel
+          .find({
+            sellerId,
+          })
+          .countDocuments();
+        responseReturn(res, 200, { orders, totalOrder });
+      }
+    } catch (error) {
+      console.log("get seller Order error" + error.message);
+      responseReturn(res, 500, { message: "internal server error" });
+    }
+  };
+  // End Method
 }
 
 module.exports = new orderController();

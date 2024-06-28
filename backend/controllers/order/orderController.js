@@ -6,6 +6,9 @@ const moment = require("moment");
 const {
   mongo: { ObjectId },
 } = require("mongoose");
+const stripe = require("stripe")(
+  "sk_test_51OhvW7Gr7paNn0fxvVAsZIGBYQQRTp7jMvPHJ78uiwLtHR7xV0UNXkvMQo96zwBRKeb4FdS7pE9w544PBDXx8B6K00dRx0xf01"
+);
 
 class orderController {
   paymentCheck = async (id) => {
@@ -331,6 +334,23 @@ class orderController {
     } catch (error) {
       console.log("get seller Order error" + error.message);
       responseReturn(res, 500, { message: "internal server error" });
+    }
+  };
+  // End Method
+
+  create_payment = async (req, res) => {
+    const { price } = req.body;
+    try {
+      const payment = await stripe.paymentIntents.create({
+        amount: price * 100,
+        currency: "usd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+      responseReturn(res, 200, { clientSecret: payment.client_secret });
+    } catch (error) {
+      console.log(error.message);
     }
   };
   // End Method

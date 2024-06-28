@@ -15,6 +15,7 @@ router.get(
   "/home/coustomer/get-order-details/:orderId",
   orderController.get_order_details
 );
+router.post("/order/create-payment", orderController.create_payment);
 
 // Admin
 router.get("/admin/orders", orderController.get_admin_orders);
@@ -31,4 +32,5 @@ router.put(
   "/seller/order-status/update/:orderId",
   orderController.seller_order_status_update
 );
+
 module.exports = router;

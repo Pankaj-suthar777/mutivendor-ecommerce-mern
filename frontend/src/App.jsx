@@ -20,6 +20,7 @@ import ChangePassword from "./components/dashboard/ChangePassword";
 import Wishlist from "./components/dashboard/Wishlist";
 import OrderDetails from "./components/dashboard/OrderDetails";
 import Chat from "./components/dashboard/Chat";
+import ConfirmOrder from "./pages/ConfirmOrder";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,8 @@ const App = () => {
         <Route path="/products/search?" element={<SearchProducts />} />
 
         <Route path="/product/details/:slug" element={<Details />} />
+        <Route path="/order/confirm?" element={<ConfirmOrder />} />
+
         <Route path="/dashboard" element={<ProtectUser />}>
           <Route path="" element={<Dashboard />}>
             <Route path="" element={<Index />} />

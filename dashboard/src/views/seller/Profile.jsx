@@ -11,6 +11,7 @@ import {
 import toast from "react-hot-toast";
 import { PropagateLoader } from "react-spinners";
 import { overrideStyle } from "../../utils/utils";
+import { create_stripe_connect_account } from "../../store/Reducers/sellerReducer";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -128,9 +129,9 @@ const Profile = () => {
                       </span>
                     ) : (
                       <span
-                        // onClick={() =>
-                        //   dispatch(create_stripe_connect_account())
-                        // }
+                        onClick={() =>
+                          dispatch(create_stripe_connect_account())
+                        }
                         className="bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded"
                       >
                         Click Active

@@ -159,6 +159,24 @@ class paymentController {
     }
   };
   // End Method
+
+  get_payment_request = async (req, res) => {
+    try {
+      const withdrowalRequest = await withdrowRequest.find({
+        status: "pending",
+      });
+      responseReturn(res, 200, { withdrowalRequest });
+    } catch (error) {
+      responseReturn(res, 500, { message: "Internal Server Error" });
+    }
+  };
+  // End Method
+
+  payment_request_confirm = async (req, res) => {
+    const { paymentId } = req.body;
+    console.log(paymentId);
+  };
+  // End Method
 }
 
 module.exports = new paymentController();

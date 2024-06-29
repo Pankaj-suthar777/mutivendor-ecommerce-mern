@@ -17,5 +17,10 @@ router.get(
   authMidleware,
   paymentController.get_seller_payment_details
 );
+router.post(
+  "/payment/withdrowal-request",
+  authMidleware,
+  paymentController.withdrowal_request
+);
 
 module.exports = router;

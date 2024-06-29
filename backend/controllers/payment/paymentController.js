@@ -141,6 +141,24 @@ class paymentController {
     }
   };
   // End Method
+
+  withdrowal_request = async (req, res) => {
+    const { amount, sellerId } = req.body;
+
+    try {
+      const withdrowal = await withdrowRequest.create({
+        sellerId,
+        amount: parseInt(amount),
+      });
+      responseReturn(res, 200, {
+        withdrowal,
+        message: "Withdrowal Request Send",
+      });
+    } catch (error) {
+      responseReturn(res, 500, { message: "Internal Server Error" });
+    }
+  };
+  // End Method
 }
 
 module.exports = new paymentController();

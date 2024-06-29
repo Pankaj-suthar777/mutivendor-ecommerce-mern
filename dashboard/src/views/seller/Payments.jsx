@@ -1,8 +1,7 @@
-import { MdCurrencyExchange, MdProductionQuantityLimits } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
-import { FaCartShopping } from "react-icons/fa6";
-import { forwardRef } from "react";
-
+import { MdCurrencyExchange } from "react-icons/md";
+import { forwardRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { get_seller_payment_details } from "../../store/Reducers/PaymentReducer";
 import { FixedSizeList as List } from "react-window";
 
 function handleOnWheel({ deltaY }) {
@@ -15,6 +14,13 @@ const outerElementType = forwardRef((props, ref) => (
 ));
 
 const Payments = () => {
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(get_seller_payment_details(userInfo._id));
+  }, [dispatch, userInfo._id]);
+
   const Row = ({ index, style }) => {
     return (
       <div style={style} className="flex text-sm text-white font-medium">

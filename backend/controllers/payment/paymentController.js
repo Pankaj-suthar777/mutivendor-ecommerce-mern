@@ -5,6 +5,8 @@ const stripe = require("stripe")(
 );
 const { responseReturn } = require("../../utils/response");
 const sellerModel = require("../../models/sellerModel");
+const sellerWallet = require("../../models/sellerWallet");
+const withdrowRequest = require("../../models/withdrowRequest");
 
 class paymentController {
   create_stripe_connect_account = async (req, res) => {
@@ -68,6 +70,74 @@ class paymentController {
       }
     } catch (error) {
       responseReturn(res, 500, { message: "Internal Server Error" });
+    }
+  };
+
+  sumAmount = (data) => {
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) {
+      sum = sum + data[i].amount;
+    }
+    return sum;
+  };
+
+  // End Method
+  get_seller_payment_details = async (req, res) => {
+    const { sellerId } = req.params;
+
+    try {
+      const payments = await sellerWallet.find({ sellerId });
+
+      const pendingWithdrows = await withdrowRequest.find({
+        $and: [
+          {
+            sellerId: {
+              $eq: sellerId,
+            },
+          },
+          {
+            status: {
+              $eq: "pending",
+            },
+          },
+        ],
+      });
+
+      const successWithdrows = await withdrowRequest.find({
+        $and: [
+          {
+            sellerId: {
+              $eq: sellerId,
+            },
+          },
+          {
+            status: {
+              $eq: "success",
+            },
+          },
+        ],
+      });
+
+      const pendingAmount = this.sumAmount(pendingWithdrows);
+      const withdrowAmount = this.sumAmount(successWithdrows);
+      const totalAmount = this.sumAmount(payments);
+
+      let availableAmount = 0;
+
+      if (totalAmount > 0) {
+        availableAmount = totalAmount - (pendingAmount + withdrowAmount);
+      }
+
+      responseReturn(res, 200, {
+        totalAmount,
+        pendingAmount,
+        withdrowAmount,
+        availableAmount,
+        pendingWithdrows,
+        successWithdrows,
+      });
+    } catch (error) {
+      console.log(error.message);
     }
   };
   // End Method

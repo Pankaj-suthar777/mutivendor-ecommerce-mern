@@ -9,6 +9,8 @@ const {
 const stripe = require("stripe")(
   "sk_test_51OhvW7Gr7paNn0fxvVAsZIGBYQQRTp7jMvPHJ78uiwLtHR7xV0UNXkvMQo96zwBRKeb4FdS7pE9w544PBDXx8B6K00dRx0xf01"
 );
+const myShopWallet = require("../../models/myShopWallet");
+const sellerWallet = require("../../models/sellerWallet");
 
 class orderController {
   paymentCheck = async (id) => {
@@ -349,6 +351,50 @@ class orderController {
         },
       });
       responseReturn(res, 200, { clientSecret: payment.client_secret });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  // End Method
+
+  order_confirm = async (req, res) => {
+    const { orderId } = req.params;
+    try {
+      await customerOrder.findByIdAndUpdate(orderId, {
+        payment_status: "paid",
+      });
+      await authOrderModel.updateMany(
+        { orderId: new ObjectId(orderId) },
+        {
+          payment_status: "paid",
+          delivery_status: "pending",
+        }
+      );
+
+      const cuOrder = await customerOrder.findById(orderId);
+
+      const auOrder = await authOrderModel.find({
+        orderId: new ObjectId(orderId),
+      });
+
+      const time = moment(Date.now()).format("l");
+      const splitTime = time.split("/");
+
+      await myShopWallet.create({
+        amount: cuOrder.price,
+        month: splitTime[0],
+        year: splitTime[2],
+      });
+
+      for (let i = 0; i < auOrder.length; i++) {
+        await sellerWallet.create({
+          sellerId: auOrder[i].sellerId.toString(),
+          amount: auOrder[i].price,
+          month: splitTime[0],
+          year: splitTime[2],
+        });
+      }
+      responseReturn(res, 200, { message: "success" });
     } catch (error) {
       console.log(error.message);
     }

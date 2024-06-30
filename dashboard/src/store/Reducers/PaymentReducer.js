@@ -94,7 +94,7 @@ export const PaymentReducer = createSlice({
         state.totalAmount = payload.totalAmount;
         state.availableAmount = payload.availableAmount;
         state.withdrowAmount = payload.withdrowAmount;
-        state.pendingAmount = payload.availableAmount;
+        state.pendingAmount = payload.pendingAmount;
       })
       .addCase(send_withdrowal_request.pending, (state) => {
         state.loader = true;
@@ -116,6 +116,21 @@ export const PaymentReducer = createSlice({
       })
       .addCase(get_payment_request.fulfilled, (state, { payload }) => {
         state.pendingWithdrows = payload.withdrowalRequest;
+      })
+      .addCase(confirm_payment_request.pending, (state) => {
+        state.loader = true;
+      })
+      .addCase(confirm_payment_request.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.message;
+      })
+      .addCase(confirm_payment_request.fulfilled, (state, { payload }) => {
+        const temp = state.pendingWithdrows.filter(
+          (r) => r._id !== payload.payment._id
+        );
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.pendingWithdrows = temp;
       });
   },
 });

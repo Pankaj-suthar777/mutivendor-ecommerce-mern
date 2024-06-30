@@ -23,8 +23,15 @@ import {
 } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import {
+  get_cart_products,
+  get_wishlist_products,
+} from "../store/reducers/cartReducer";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
+  const dispatch = useDispatch();
   let [searchParams] = useSearchParams();
   const categoryFromPara = searchParams.get("category");
 
@@ -58,6 +65,13 @@ const Header = () => {
   const search = () => {
     navigate(`/products/search?category=${category}&&value=${searchValue}`);
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(get_cart_products(userInfo.id));
+      dispatch(get_wishlist_products(userInfo.id));
+    }
+  }, [userInfo, dispatch]);
 
   return (
     <div className="w-full bg-white">
@@ -213,7 +227,12 @@ const Header = () => {
                 </ul>
                 <div className="flex md-lg:hidden justify-center items-center gap-5">
                   <div className="flex justify-center gap-5">
-                    <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
+                    <div
+                      className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]"
+                      onClick={() =>
+                        navigate(userInfo ? "/dashboard/my-wishlist" : "/login")
+                      }
+                    >
                       <span className="text-xl text-green-500">
                         <FaHeart />
                       </span>

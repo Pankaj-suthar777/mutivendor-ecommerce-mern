@@ -20,7 +20,10 @@ class dashboardController {
       const totalProduct = await productModel.find({}).countDocuments();
       const totalOrder = await customerOrder.find({}).countDocuments();
       const totalSeller = await sellerModel.find({}).countDocuments();
-      const messages = await adminSellerMessage.find({}).limit(3);
+      const messages = await adminSellerMessage
+        .find({})
+        .sort({ createdAt: -1 })
+        .limit(3);
       const recentOrders = await customerOrder.find({}).limit(5);
 
       responseReturn(res, 200, {

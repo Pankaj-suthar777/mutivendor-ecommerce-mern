@@ -20,7 +20,6 @@ const AdminDashboard = () => {
     recentOrder,
     recentMessage,
   } = useSelector((state) => state.dashboard);
-  const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(get_admin_dashboard_data());

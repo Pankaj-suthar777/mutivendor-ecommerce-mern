@@ -17,7 +17,7 @@ app.use(
   })
 );
 
-app.use("/", (req, res) => {
+app.get("/hello", (req, res) => {
   res.send("Hello");
 });
 

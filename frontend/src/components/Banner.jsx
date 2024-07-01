@@ -33,7 +33,7 @@ const Banner = () => {
   }, [dispatch]);
   return (
     <div className="w-full">
-      <div className="w-[85%] lg:w-[90%] mx-auto">
+      <div className="w-full">
         <div className="w-full flex flex-wrap md-lg:gap-8">
           <div className="w-full">
             <div className="my-8">
@@ -46,8 +46,12 @@ const Banner = () => {
               >
                 {banners.length > 0 &&
                   banners.map((b, i) => (
-                    <Link key={i} to="#">
-                      <img src={b.banner} alt="" />
+                    <Link key={i} to={`product/details/${b.link}`}>
+                      <img
+                        src={b.banner}
+                        alt=""
+                        className="max-h-[600px] object-cover w-full"
+                      />
                     </Link>
                   ))}
               </Carousel>

@@ -156,7 +156,7 @@ class homeControllers {
 
       const relatedProducts = await productModel
         .find({
-          // this prooduct will be not included
+          // this product will be not included
           $and: [
             {
               _id: {

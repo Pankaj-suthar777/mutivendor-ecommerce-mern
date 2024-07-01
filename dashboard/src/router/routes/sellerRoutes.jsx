@@ -14,6 +14,7 @@ import Pending from "../../views/Pending";
 import Deactive from "../../views/Deactive";
 import EditProduct from "../../views/seller/EditProduct";
 import OrderDetails from "../../views/seller/OrderDetails";
+import AddBanner from "../../views/seller/AddBanner";
 
 export const sellerRoutes = [
   {
@@ -79,8 +80,15 @@ export const sellerRoutes = [
     element: <SellerToCustomer />,
     role: "seller",
     status: "active",
+    visibility: ["active", "deactive", "pending"],
   },
 
+  {
+    path: "/seller/dashboard/add-banner/:productId",
+    element: <AddBanner />,
+    role: "seller",
+    status: "active",
+  },
   {
     path: "/seller/dashboard/profile",
     element: <Profile />,

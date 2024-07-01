@@ -13,4 +13,11 @@ router.get(
   dashboardController.get_seller_dashboard_data
 );
 
+router.post("/banner/add", authMidleware, dashboardController.add_banner);
+router.get(
+  "/banner/get/:productId",
+  authMidleware,
+  dashboardController.get_banner
+);
+
 module.exports = router;

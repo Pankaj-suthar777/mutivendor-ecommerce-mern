@@ -12,7 +12,7 @@ const server = http.createServer(app);
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:3000"],
+    origin: [process.env.client_url, process.env.dashboard_url],
     credentials: true,
   })
 );

@@ -127,13 +127,19 @@ const Login = () => {
                 </p>
               </div>
 
-              <a target="_blank" href="http://localhost:3000/login">
+              <a
+                target="_blank"
+                href="https://mutivendor-ecommerce-mern-dashboard.vercel.app/login"
+              >
                 <div className="px-8 w-full py-2 bg-[#02e3e0] shadow hover:shadow-red-500/50 text-white rounded-md flex justify-center items-center gap-2 mb-3">
                   Login As a Seller
                 </div>
               </a>
 
-              <a target="_blank" href="http://localhost:3000/register">
+              <a
+                target="_blank"
+                href="https://mutivendor-ecommerce-mern-dashboard.vercel.app/register"
+              >
                 <div className="px-8 w-full py-2 bg-[#ad2cc4] shadow hover:shadow-red-500/50 text-white rounded-md flex justify-center items-center gap-2 mb-3">
                   Register As a Seller
                 </div>

@@ -11,7 +11,7 @@ import {
   send_message,
   updateMessage,
 } from "../../store/reducers/chatReducer";
-const socket = io("http://localhost:5000");
+const socket = io("https://mutivendor-ecommerce-mern-api.vercel.app");
 import toast from "react-hot-toast";
 import { useRef } from "react";
 import { FaList } from "react-icons/fa";

@@ -8,4 +8,4 @@ export const overrideStyle = {
   alignItems: "center",
 };
 
-export const socket = io("http://localhost:5000");
+export const socket = io("https://mutivendor-ecommerce-mern-api.vercel.app");

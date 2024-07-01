@@ -26,7 +26,8 @@ const CheckoutForm = ({ orderId }) => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:5173/order/confirm",
+        return_url:
+          "https://mutivendor-ecommerce-mern-frontend.vercel.app/order/confirm",
       },
     });
     if (error.type === "card_error" || error.type === "validation_error") {

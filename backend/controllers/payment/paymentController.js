@@ -24,8 +24,9 @@ class paymentController {
 
         const accountLink = await stripe.accountLinks.create({
           account: account.id,
-          refresh_url: "http://localhost:3000/refresh",
-          return_url: `http://localhost:3000/success?activeCode=${uid}`,
+          refresh_url:
+            "https://mutivendor-ecommerce-mern-frontend.vercel.app/refresh",
+          return_url: `https://mutivendor-ecommerce-mern-frontend.vercel.app/success?activeCode=${uid}`,
           type: "account_onboarding",
         });
         await stripeModel.create({
@@ -39,8 +40,9 @@ class paymentController {
 
         const accountLink = await stripe.accountLinks.create({
           account: account.id,
-          refresh_url: "http://localhost:3001/refresh",
-          return_url: `http://localhost:3001/success?activeCode=${uid}`,
+          refresh_url:
+            "https://mutivendor-ecommerce-mern-dashboard.vercel.app/refresh",
+          return_url: `https://mutivendor-ecommerce-mern-dashboard.vercel.app/success?activeCode=${uid}`,
           type: "account_onboarding",
         });
         await stripeModel.create({

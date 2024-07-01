@@ -225,6 +225,7 @@ class dashboardController {
     try {
       const banners = await bannerModel.aggregate([
         {
+          // random 5 banner
           $sample: {
             size: 5,
           },

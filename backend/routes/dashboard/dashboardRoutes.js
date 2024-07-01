@@ -24,5 +24,6 @@ router.put(
   authMidleware,
   dashboardController.update_banner
 );
+router.get("/banners", dashboardController.get_banners);
 
 module.exports = router;

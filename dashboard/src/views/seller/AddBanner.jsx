@@ -150,7 +150,7 @@ const AddBanner = () => {
                 {loader ? (
                   <PropagateLoader color="#fff" cssOverride={overrideStyle} />
                 ) : (
-                  "Add Banner"
+                  "Update Banner"
                 )}
               </button>
             </form>

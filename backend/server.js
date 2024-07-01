@@ -17,6 +17,10 @@ app.use(
   })
 );
 
+app.use("/", (req, res) => {
+  res.send("Hello");
+});
+
 const io = socket(server, {
   cors: {
     origin: "*",

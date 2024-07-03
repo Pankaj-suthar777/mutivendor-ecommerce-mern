@@ -8,6 +8,7 @@ module.exports.authMidleware = async (req, res, next) => {
   } else {
     try {
       const decodeToken = await jwt.verify(accessToken, process.env.SECRET);
+      console.log(decodeToken);
       req.role = decodeToken.role;
       req.id = decodeToken.id;
       next();

@@ -48,8 +48,8 @@ class authControllers {
 
         if (match) {
           const token = await createToken({
-            id: seller.id,
-            role: seller.role,
+            id: seller._id,
+            role: "seller",
           });
           res.cookie("accessToken", token, {
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),

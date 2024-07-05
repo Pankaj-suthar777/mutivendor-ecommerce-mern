@@ -25,6 +25,7 @@ const io = socket(server, {
   cors: {
     origin: "*",
     credentials: true,
+    exposedHeaders: ["Set-Cookie"] 
   },
 });
 

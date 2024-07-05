@@ -30,6 +30,9 @@ class customerAuthController {
           method: createCustomer.method,
         });
         res.cookie("customerToken", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
         responseReturn(res, 201, { message: "User Register Success", token });
@@ -57,6 +60,9 @@ class customerAuthController {
             method: customer.method,
           });
           res.cookie("customerToken", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           });
           responseReturn(res, 201, { message: "User Login Success", token });

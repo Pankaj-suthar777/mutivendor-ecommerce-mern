@@ -1,4 +1,4 @@
-cimport { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_seller_message,

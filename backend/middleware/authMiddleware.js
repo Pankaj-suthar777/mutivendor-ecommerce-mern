@@ -6,6 +6,8 @@ module.exports.authMidleware = async (req, res, next) => {
   const { authorization } = req.headers;
   const accessToken = authorization?.split("Bearer ")[1];
 
+  console.log("accessToken h", accessToken);
+
   if (!accessToken) {
     return res.status(409).json({ error: "Please Login First" });
   } else {

@@ -53,10 +53,10 @@ class authControllers {
           const token = await createToken({
             id: seller._id,
             role: "seller",
-            sameSite: "Strict",
           });
+
           res.cookie("accessToken", token, {
-            httpOnly: false,
+            httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),

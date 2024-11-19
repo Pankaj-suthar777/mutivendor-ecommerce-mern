@@ -14,10 +14,7 @@ import toast from "react-hot-toast";
 const Wishlist = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const { errorMessage, successMessage, wishlist } = useSelector(
-    (state) => state.cart
-  );
-
+  const { successMessage, wishlist } = useSelector((state) => state.cart);
   useEffect(() => {
     dispatch(get_wishlist_products(userInfo.id));
   }, [dispatch, userInfo.id]);

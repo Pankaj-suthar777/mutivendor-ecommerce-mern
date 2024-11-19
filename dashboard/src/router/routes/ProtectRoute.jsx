@@ -30,8 +30,6 @@ const ProtectRoute = ({ route, children }) => {
               return <Suspense fallback={null}>{children}</Suspense>;
             }
           }
-        } else {
-          return <Navigate to="/unauthorized" replace />;
         }
       }
     } else {

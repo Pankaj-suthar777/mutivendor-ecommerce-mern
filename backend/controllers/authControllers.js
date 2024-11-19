@@ -53,6 +53,8 @@ class authControllers {
           const token = await createToken({
             id: seller._id,
             role: "seller",
+            name: seller.name,
+            email: seller.email,
           });
 
           res.cookie("accessToken", token, {
@@ -61,6 +63,7 @@ class authControllers {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           });
+
           responseReturn(res, 200, { token, message: "Login Success" });
         } else {
           responseReturn(res, 404, { error: "Password Wrong" });
@@ -92,7 +95,12 @@ class authControllers {
           myId: seller.id,
         });
 
-        const token = await createToken({ id: seller.id, role: seller.role });
+        const token = await createToken({
+          id: seller.id,
+          role: seller.role,
+          name: seller.name,
+          email: seller.email,
+        });
         res.cookie("accessToken", token, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });

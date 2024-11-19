@@ -21,7 +21,6 @@ export const get_cart_products = createAsyncThunk(
       const { data } = await api.get(
         `/home/product/get-cart-product/${userId}`
       );
-      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -91,6 +90,7 @@ export const get_wishlist_products = createAsyncThunk(
       const { data } = await api.get(
         `/home/product/get-wishlist-products/${userId}`
       );
+      console.log("wishlist products=", data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);

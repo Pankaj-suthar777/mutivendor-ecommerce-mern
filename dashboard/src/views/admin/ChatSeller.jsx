@@ -56,21 +56,21 @@ const ChatSeller = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [seller_admin_message]);
 
-  useEffect(() => {
-    if (successMessage) {
-      socket.emit(
-        "send_message_admin_to_seller",
-        seller_admin_message[seller_admin_message.length - 1]
-      );
-      dispatch(messageClear());
-    }
-  }, [successMessage, dispatch, seller_admin_message]);
+  // useEffect(() => {
+  //   if (successMessage) {
+  //     socket.emit(
+  //       "send_message_admin_to_seller",
+  //       seller_admin_message[seller_admin_message.length - 1]
+  //     );
+  //     dispatch(messageClear());
+  //   }
+  // }, [successMessage, dispatch, seller_admin_message]);
 
-  useEffect(() => {
-    socket.on("receved_seller_message", (msg) => {
-      setReceverMessage(msg);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on("receved_seller_message", (msg) => {
+  //     setReceverMessage(msg);
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (receverMessage) {

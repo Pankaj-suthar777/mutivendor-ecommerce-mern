@@ -20,28 +20,28 @@ const MainLayout = () => {
 
   const { userInfo } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (userInfo && userInfo.role === "seller") {
-      socket.emit("add_seller", userInfo._id, userInfo);
-    } else {
-      socket.emit("add_admin", userInfo);
-    }
-  }, [userInfo]);
+  // useEffect(() => {
+  //   if (userInfo && userInfo.role === "seller") {
+  //     socket.emit("add_seller", userInfo._id, userInfo);
+  //   } else {
+  //     socket.emit("add_admin", userInfo);
+  //   }
+  // }, [userInfo]);
 
-  useEffect(() => {
-    socket.on("activeCustomer", (customers) => {
-      dispatch(updateCustomer(customers));
-    });
-    socket.on("activeSeller", (sellers) => {
-      dispatch(updateSellers(sellers));
-    });
-  });
+  // useEffect(() => {
+  //   socket.on("activeCustomer", (customers) => {
+  //     dispatch(updateCustomer(customers));
+  //   });
+  //   socket.on("activeSeller", (sellers) => {
+  //     dispatch(updateSellers(sellers));
+  //   });
+  // });
 
-  useEffect(() => {
-    socket.on("receved_admin_message", (msg) => {
-      setRecMsg(msg);
-    });
-  }, [dispatch, pathname]);
+  // useEffect(() => {
+  //   socket.on("receved_admin_message", (msg) => {
+  //     setRecMsg(msg);
+  //   });
+  // }, [dispatch, pathname]);
 
   useEffect(() => {
     if (recMsg) {

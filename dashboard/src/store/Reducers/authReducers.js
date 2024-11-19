@@ -51,11 +51,23 @@ export const seller_login = createAsyncThunk(
   }
 );
 
+import axios from "axios";
+
+const production = "https://mutivendor-ecommerce-mern-api.vercel.app";
 export const get_user_info = createAsyncThunk(
   "auth/get_user_info",
   async (_, { rejectWithValue, fulfillWithValue }) => {
     try {
-      const { data } = await api.get("/get-user", {
+      const accessToken = localStorage.getItem("accessToken");
+
+      const clientApi = axios.create({
+        baseURL: `${production}/api`,
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const { data } = await clientApi.get("/get-user", {
         withCredentials: true,
       });
 
@@ -180,6 +192,11 @@ export const authReducer = createSlice({
         state.successMessage = payload.message;
         state.token = payload.token;
         state.role = returnRole(payload.token);
+        state.userInfo = {
+          name: payload.name,
+          id: payload._id,
+          email: payload.email,
+        };
       })
       .addCase(seller_register.pending, (state) => {
         state.loader = true;

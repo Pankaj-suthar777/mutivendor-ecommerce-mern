@@ -55,18 +55,18 @@ const SellerToCustomer = () => {
     setText("");
   };
 
-  useEffect(() => {
-    if (successMessage) {
-      socket.emit("send_seller_message", messages[messages.length - 1]);
-      dispatch(messageClear());
-    }
-  }, [successMessage, dispatch, messages]);
+  // useEffect(() => {
+  //   if (successMessage) {
+  //     socket.emit("send_seller_message", messages[messages.length - 1]);
+  //     dispatch(messageClear());
+  //   }
+  // }, [successMessage, dispatch, messages]);
 
-  useEffect(() => {
-    socket.on("customer_message", (msg) => {
-      setReceverMessage(msg);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on("customer_message", (msg) => {
+  //     setReceverMessage(msg);
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (receverMessage) {

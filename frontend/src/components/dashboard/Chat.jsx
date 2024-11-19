@@ -31,9 +31,9 @@ const Chat = () => {
     (state) => state.chat
   );
 
-  useEffect(() => {
-    socket.emit("add_user", userInfo.id, userInfo);
-  }, [userInfo]);
+  // useEffect(() => {
+  //   socket.emit("add_user", userInfo.id, userInfo);
+  // }, [userInfo]);
 
   useEffect(() => {
     dispatch(
@@ -58,18 +58,18 @@ const Chat = () => {
     }
   };
 
-  useEffect(() => {
-    socket.on("seller_message", (msg) => {
-      setReceverMessage(msg);
-    });
-    socket.on("activeSeller", (sellers) => {
-      setActiveSeller(sellers);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on("seller_message", (msg) => {
+  //     setReceverMessage(msg);
+  //   });
+  //   socket.on("activeSeller", (sellers) => {
+  //     setActiveSeller(sellers);
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (successMessage) {
-      socket.emit("send_customer_message", fb_messages[fb_messages.length - 1]);
+      // socket.emit("send_customer_message", fb_messages[fb_messages.length - 1]);
       dispatch(messageClear());
     }
   }, [successMessage, dispatch, fb_messages]);

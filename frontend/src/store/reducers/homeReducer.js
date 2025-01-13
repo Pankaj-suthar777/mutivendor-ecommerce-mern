@@ -140,6 +140,8 @@ export const homeReducer = createSlice({
     rating_review: [],
     reviews: [],
     banners: [],
+    productLoading: false,
+    addingReviewLoading: false,
   },
   reducers: {
     messageClear: (state) => {
@@ -152,11 +154,15 @@ export const homeReducer = createSlice({
       state.categorys = payload.categorys;
     });
     builder
+      .addCase(get_products.pending, (state) => {
+        state.productLoading = true;
+      })
       .addCase(get_products.fulfilled, (state, { payload }) => {
         state.products = payload.products;
         state.latest_product = payload.latest_product;
         state.topRated_product = payload.topRated_product;
         state.discount_product = payload.discount_product;
+        state.productLoading = false;
       })
       .addCase(price_range_product.fulfilled, (state, { payload }) => {
         state.latest_product = payload.latest_product;
@@ -167,13 +173,21 @@ export const homeReducer = createSlice({
         state.totalProduct = payload.totalProduct;
         state.parPage = payload.parPage;
       })
+      .addCase(product_details.pending, (state) => {
+        state.productLoading = true;
+      })
       .addCase(product_details.fulfilled, (state, { payload }) => {
         state.product = payload.product;
         state.relatedProducts = payload.relatedProducts;
         state.moreProducts = payload.moreProducts;
+        state.productLoading = false;
+      })
+      .addCase(customer_review.pending, (state) => {
+        state.addingReviewLoading = true;
       })
       .addCase(customer_review.fulfilled, (state, { payload }) => {
         state.successMessage = payload.message;
+        state.addingReviewLoading = false;
       })
       .addCase(get_reviews.fulfilled, (state, { payload }) => {
         state.reviews = payload.reviews;

@@ -22,6 +22,7 @@ import {
   add_to_wishlist,
 } from "../store/reducers/cartReducer";
 import toast from "react-hot-toast";
+import Loading from "../components/Loading";
 
 const Details = () => {
   const { slug } = useParams();
@@ -31,9 +32,8 @@ const Details = () => {
     dispatch(product_details(slug));
   }, [slug, dispatch]);
 
-  const { product, relatedProducts, moreProducts } = useSelector(
-    (state) => state.home
-  );
+  const { product, relatedProducts, moreProducts, productLoading } =
+    useSelector((state) => state.home);
 
   const [quantity, setQuantity] = useState(1);
 
@@ -165,6 +165,14 @@ const Details = () => {
       },
     });
   };
+
+  if (productLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen w-screen">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div>

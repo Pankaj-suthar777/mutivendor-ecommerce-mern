@@ -11,7 +11,6 @@ import {
   customer_review,
   get_reviews,
   messageClear,
-  product_details,
 } from "../store/reducers/homeReducer";
 import toast from "react-hot-toast";
 
@@ -20,9 +19,13 @@ const Reviews = ({ product }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const { successMessage, reviews, rating_review, totalReview } = useSelector(
-    (state) => state.home
-  );
+  const {
+    successMessage,
+    reviews,
+    rating_review,
+    totalReview,
+    addingReviewLoading,
+  } = useSelector((state) => state.home);
 
   const [rat, setRat] = useState("");
   const [re, setRe] = useState("");
@@ -47,7 +50,14 @@ const Reviews = ({ product }) => {
           pageNumber,
         })
       );
-      dispatch(product_details(product.slug));
+      if (product._id) {
+        dispatch(
+          get_reviews({
+            productId: product._id,
+            pageNumber,
+          })
+        );
+      }
       setRat("");
       setRe("");
       dispatch(messageClear());
@@ -256,9 +266,21 @@ const Reviews = ({ product }) => {
               ></textarea>
               <div className="mt-2">
                 <button
-                  className="py-1 px-5 bg-indigo-500 text-white rounded-sm"
+                  className={`py-1 px-5 bg-indigo-500 text-white rounded-sm flex gap-2 items-center ${
+                    addingReviewLoading ? "bg-indigo-300" : ""
+                  }`}
                   type="submit"
+                  disabled={addingReviewLoading}
                 >
+                  {addingReviewLoading ? (
+                    <>
+                      <img
+                        className="w-4 h-4 animate-spin"
+                        src="https://www.svgrepo.com/show/448500/loading.svg"
+                        alt="Loading icon"
+                      />
+                    </>
+                  ) : null}
                   Submit
                 </button>
               </div>

@@ -191,17 +191,7 @@ const Header = () => {
                       Shop
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      className={`p-2 block ${
-                        pathname === "/blog"
-                          ? "text-[#059473]"
-                          : "text-slate-600"
-                      } `}
-                    >
-                      Blog
-                    </Link>
-                  </li>
+
                   <li>
                     <Link
                       className={`p-2 block ${
